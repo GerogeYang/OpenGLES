@@ -8,12 +8,13 @@
 
 class BaseShape {
 private:
-    virtual void init();
 
 public:
     BaseShape();
 
     virtual ~BaseShape();
+
+    virtual void init();
 
     virtual void draw();
 };

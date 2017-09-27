@@ -5,16 +5,18 @@
 #ifndef OPENGLES_TRIANGLE_H
 #define OPENGLES_TRIANGLE_H
 
+#include <GLES2/gl2.h>
 #include "BaseShape.h"
 
 class Triangle : public BaseShape {
 private:
-    void init();
 
 public:
     Triangle();
 
     ~Triangle();
+
+    void init();
 
     void draw();
 };
