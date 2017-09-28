@@ -22,8 +22,12 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         mGLSurfaceView = new GLSurfaceView(this);
+
+        mGLSurfaceView.setEGLContextClientVersion(2);
+        mGLSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         mGLSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         mGLSurfaceView.setZOrderOnTop(true);
+
 
         mGLRender = new GLRender(this);
         mGLSurfaceView.setRenderer(mGLRender);

@@ -12,7 +12,7 @@
 
 class Render {
 private:
-    void init();
+    void init(JNIEnv *env, jobject assetManager);
 
 public:
     Render();
