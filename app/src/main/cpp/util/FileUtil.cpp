@@ -13,19 +13,21 @@ extern "C" {
 
 AAssetManager *FileUtil::mgr;
 
-/*char *getStr(const char *fileName) {
+/*
+char *getStrFromFile(const char *fileName) {
     LOGD("~~~getStr()~~~");
-    FILE *pFile = fopen(fileName, "r"); //获取文件的指针
-    char *pBuf;  //定义文件指针
-    fseek(pFile, 0, SEEK_END); //把指针移动到文件的结尾 ，获取文件长度
-    int len = ftell(pFile); //获取文件长度
-    pBuf = new char[len + 1]; //定义数组长度
-    rewind(pFile); //把指针移动到文件开头 因为我们一开始把指针移动到结尾，如果不移动回来 会出错
-    fread(pBuf, 1, len, pFile); //读文件
-    pBuf[len] = 0; //把读到的文件最后一位 写为0 要不然系统会一直寻找到0后才结束
-    fclose(pFile); // 关闭文件
+    FILE *pFile = fopen(fileName, "r");
+    char *pBuf;
+    fseek(pFile, 0, SEEK_END);
+    long len = ftell(pFile);
+    pBuf = new char[len + 1];
+    rewind(pFile);
+    fread(pBuf, 1, (size_t)len, pFile);
+    pBuf[len] = 0;
+    fclose(pFile);
     return pBuf;
-}*/
+}
+*/
 
 void FileUtil::setAAssetManager(AAssetManager *manager) {
     LOGD("~~~setAAssetManager()~~~");
@@ -47,12 +49,11 @@ off_t FileUtil::getFileSize(const char *fileName) {
 
 char* FileUtil::getStrFromAsset(const char *fileName) {
     LOGD("~~~getAssetStr()~~~");
-    LOGI("mgr = %s, fileName = %s\n",mgr,fileName);
     AAsset *asset = AAssetManager_open(mgr, fileName, AASSET_MODE_UNKNOWN);
     off_t bufferSize = AAsset_getLength(asset);
-    char* data = (char*) malloc(bufferSize + 1);
+    char* data = (char*) malloc(sizeof(char)*(bufferSize + 1));
     data[bufferSize] = '\0';
-    int size = AAsset_read(asset, (void*)data, bufferSize);
+    int size = AAsset_read(asset, (void*)data, (size_t)bufferSize);
     return data;
 }
 

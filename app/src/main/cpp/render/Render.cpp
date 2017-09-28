@@ -4,8 +4,6 @@
 
 #include <GLES2/gl2.h>
 #include <GLES/gl.h>
-#include <jni.h>
-#include <android/asset_manager_jni.h>
 #include "Render.h"
 #include "../util/Debug.h"
 #include "../util/FileUtil.h"
@@ -17,12 +15,12 @@ extern "C" {
 #endif
 
 GLfloat vertexts[] = {
-        0.0f, 1.0f, -3.0f,
-        1.0f, 0.0f, -3.0f,
-        -1.0f, 0.0f, -3.0f
+        0.0f, 1.0f, -0.1f,
+        1.0f, 0.0f, -0.1f,
+        -1.0f, 0.0f, -0.1f
 };
 
-GLfloat color[] = {1.0f, 1.0f, .5f, 1.0f};
+GLfloat color[] = {1.0f, 0.0f, 0.0f, 1.0f};
 
 char *vertexShaderCode;
 
@@ -51,7 +49,7 @@ void Render::init(JNIEnv *env, jobject assetManager) {
 void Render::createEs(JNIEnv *env, jobject assetManager) {
     LOGD("~~~createEs()~~~");
     init(env, assetManager);
-    glClearColor(1, 1, 1, 1);
+    glClearColor(0, 0, 0, 0);
     vertexShaderCode = FileUtil::getStrFromAsset("vertextSource.glsl");
     fragmentShaderCode = FileUtil::getStrFromAsset("fragmentSource.glsl");
     program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
@@ -60,16 +58,20 @@ void Render::createEs(JNIEnv *env, jobject assetManager) {
 void Render::changeEs(int width, int height) {
     LOGD("~~~changeEs()~~~");
     glViewport(0, 0, width, height);
+    float ratio = (float) width / height;
+    glFrustumf(-ratio, ratio, -1, 1, 3, 7);
 }
 
 void Render::drawEs() {
-    LOGD("drawEs()");
+    LOGD("~~~drawEs()~~~");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(program);
-    mPositionHandle = (GLuint)glGetAttribLocation(program, "vPosition");
+    mPositionHandle = (GLuint) glGetAttribLocation(program, "vPosition");
+    LOGI("mPositionHandle = %d\n", mPositionHandle);
     glEnableVertexAttribArray(mPositionHandle);
     glVertexAttribPointer(mPositionHandle, 3, GL_FLOAT, GL_FALSE, 3 * 4, vertexts);
-    mColorHandle = (GLuint)glGetUniformLocation(program, "vColor");
+    mColorHandle = (GLuint) glGetUniformLocation(program, "vColor");
+    LOGI("mColorHandle = %d\n", mColorHandle);
     glUniform4fv(mColorHandle, 1, color);
     glDrawArrays(GL_TRIANGLES, 0, 9);
     glDisableVertexAttribArray(mPositionHandle);
