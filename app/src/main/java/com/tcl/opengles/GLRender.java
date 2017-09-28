@@ -1,6 +1,7 @@
 package com.tcl.opengles;
 
 import android.content.Context;
+import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
 import com.tcl.opengles.jni.JNI;
