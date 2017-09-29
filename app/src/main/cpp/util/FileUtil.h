@@ -5,10 +5,8 @@
 #ifndef OPENGLES_FILEUTIL_H
 #define OPENGLES_FILEUTIL_H
 
-#include <android/asset_manager.h>
 #include <jni.h>
-
-
+#include <android/asset_manager.h>
 
 class FileUtil {
 private:
@@ -16,6 +14,7 @@ private:
 
 public:
     static void setAAssetManager(AAssetManager *manager);
+
 
     static char* getStrFromAsset(const char *fileName);
 

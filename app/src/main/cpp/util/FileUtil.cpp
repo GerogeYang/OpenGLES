@@ -21,6 +21,7 @@ void FileUtil::setAAssetManager(AAssetManager *manager) {
 
 char* FileUtil::getStrFromAsset(const char *fileName) {
     LOGD("~~~getAssetStr()~~~\n");
+    LOGI("~~~fileName = %s~~~\n",fileName);
     AAsset *asset = AAssetManager_open(mgr, fileName, AASSET_MODE_UNKNOWN);
     off_t bufferSize = AAsset_getLength(asset);
     char* data = (char*) malloc(sizeof(char)*(bufferSize + 1));

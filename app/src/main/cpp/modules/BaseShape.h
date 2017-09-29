@@ -6,6 +6,8 @@
 #define OPENGLES_BASESHAPE_H
 
 
+#include <GLES2/gl2.h>
+
 class BaseShape {
 private:
 

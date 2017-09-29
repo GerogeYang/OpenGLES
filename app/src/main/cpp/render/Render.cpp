@@ -19,7 +19,7 @@ Render::Render() : _triangle(NULL) {
 }
 
 Render::~Render() {
-    LOGD("~~~DestoryRender()~~~\n");
+    LOGD("~~~destoryRender()~~~\n");
     if (NULL != _triangle) {
         delete _triangle;
         _triangle = NULL;
@@ -37,6 +37,7 @@ void Render::init() {
     printGLString("Vendor", GL_VENDOR);
     printGLString("Renderer", GL_RENDERER);
     printGLString("Extensions", GL_EXTENSIONS);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
     glClearColor(0, 0, 0, 0);
     _triangle->init();
 }
@@ -56,7 +57,9 @@ void Render::changeEs(int width, int height) {
 
 void Render::drawEs() {
     LOGD("~~~drawEs()~~~\n");
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT););
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
     _triangle->draw();
 }
 

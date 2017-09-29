@@ -23,9 +23,10 @@ private:
 
     GLuint mMatrixHandle;
 
-
     GLfloat *mViewMatrix;
+
     GLfloat *mProjectMatrix;
+
     GLfloat *mMVPMatrix;
 
 public:

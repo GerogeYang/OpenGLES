@@ -29,7 +29,7 @@ Triangle::Triangle() : vertexShaderCode(NULL), fragmentShaderCode(NULL), mPositi
 }
 
 Triangle::~Triangle() {
-    LOGD("~~~DestoryTriangle()~~~\n");
+    LOGD("~~~destoryTriangle()~~~\n");
     if (NULL != vertexShaderCode) {
         free(vertexShaderCode);
         vertexShaderCode = NULL;
@@ -66,11 +66,8 @@ void Triangle::init() {
 void Triangle::change(int width, int height) {
     LOGD("~~~change()~~~\n");
     float ratio = (float) width / height;
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    Matrix::frustumM(mProjectMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
-    Matrix::setLookAtM(mViewMatrix, 0.0f, 0.0f, 0.0f, 7.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+    Matrix::frustumM(mProjectMatrix, 0, -ratio, ratio, -1, 1, 3, 100);
+    Matrix::setLookAtM(mViewMatrix, 0, 0.0f, 0.0f, 7.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
     Matrix::multiplyMM(mMVPMatrix, 0, mProjectMatrix, 0, mViewMatrix, 0);
 }
 
@@ -78,14 +75,18 @@ void Triangle::draw() {
     LOGD("~~~draw()~~~\n");
     glUseProgram(program);
     mMatrixHandle = (GLuint)glGetUniformLocation(program, "vMatrix");
-    glUniformMatrix4fv(mMatrixHandle, 1, false, mMVPMatrix);
+    glUniformMatrix4fv(mMatrixHandle, 1, GL_FALSE, mMVPMatrix);
 
     mPositionHandle = (GLuint) glGetAttribLocation(program, "vPosition");
     glEnableVertexAttribArray(mPositionHandle);
     glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GL_FLOAT, GL_FALSE,
                           COORDS_PER_VERTEX * sizeof(GLfloat), vertices);
+
     mColorHandle = (GLuint) glGetUniformLocation(program, "vColor");
     glUniform4fv(mColorHandle, 1, colors);
+
     glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices) / COORDS_PER_VERTEX);
+    glDisableVertexAttribArray(mMatrixHandle);
     glDisableVertexAttribArray(mPositionHandle);
+    glDisableVertexAttribArray(mColorHandle);
 }
