@@ -57,7 +57,7 @@ void Render::changeEs(int width, int height) {
 
 void Render::drawEs() {
     LOGD("~~~drawEs()~~~\n");
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT););
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     _triangle->draw();
