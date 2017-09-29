@@ -5,11 +5,23 @@
 #ifndef OPENGLES_TRIANGLE_H
 #define OPENGLES_TRIANGLE_H
 
-#include <GLES2/gl2.h>
 #include "BaseShape.h"
 
 class Triangle : public BaseShape {
 private:
+    static const int COORDS_PER_VERTEX = 3;
+
+    char *vertexShaderCode;
+
+    char *fragmentShaderCode;
+
+    GLuint program;
+
+    GLuint mPositionHandle;
+
+    GLuint mColorHandle;
+
+    GLuint mMatrixHandle;
 
 public:
     Triangle();
@@ -17,6 +29,8 @@ public:
     ~Triangle();
 
     void init();
+
+    void change();
 
     void draw();
 };

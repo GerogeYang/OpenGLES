@@ -5,6 +5,8 @@
 #include "RenderUtil.h"
 #include "Debug.h"
 
+GLuint RenderUtil::program = 0;
+
 void RenderUtil::checkGLError(const char *op) {
     for (GLint error = glGetError(); error; error = glGetError()) {
         LOGI("after %s() glError (0x%x)\n", op, error);
@@ -47,7 +49,7 @@ GLuint RenderUtil::createProgram(const char *vertexCode, const char *fragmentCod
         return 0;
     }
 
-    GLuint program = glCreateProgram();
+    program = glCreateProgram();
 
     if (program) {
         glAttachShader(program, vertextShader);
@@ -72,5 +74,9 @@ GLuint RenderUtil::createProgram(const char *vertexCode, const char *fragmentCod
             program = 0;
         }
     }
+    return program;
+}
+
+GLuint RenderUtil::getFinalProgram() {
     return program;
 }

@@ -8,10 +8,16 @@
 #include <jni.h>
 #include <android/asset_manager_jni.h>
 #include <android/asset_manager.h>
+#include <GLES/gl.h>
+#include "../modules/Triangle.h"
 
 class Render {
 private:
-    void init(JNIEnv *env, jobject assetManager);
+    Triangle *_triangle;
+
+    void printGLString(const char *name, GLenum s);
+
+    void init();
 
 public:
     Render();

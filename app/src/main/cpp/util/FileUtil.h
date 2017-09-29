@@ -8,7 +8,7 @@
 #include <android/asset_manager.h>
 #include <jni.h>
 
-char *getStrFromFile(const char *fileName);
+
 
 class FileUtil {
 private:
@@ -17,9 +17,11 @@ private:
 public:
     static void setAAssetManager(AAssetManager *manager);
 
-    static off_t getFileSize(const char *fileName);
-
     static char* getStrFromAsset(const char *fileName);
+
+    static char *getStrFromFile(const char *fileName);
+
+    static off_t getFileSize(const char *fileName);
 
 };
 

@@ -16,6 +16,10 @@ void BaseShape::init() {
 
 }
 
+void BaseShape::change() {
+
+}
+
 void BaseShape::draw() {
 
 }

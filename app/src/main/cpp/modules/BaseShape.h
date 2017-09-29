@@ -16,6 +16,8 @@ public:
 
     virtual void init();
 
+    virtual void change();
+
     virtual void draw();
 };
 

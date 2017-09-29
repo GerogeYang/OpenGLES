@@ -7,74 +7,59 @@
 #include "Render.h"
 #include "../util/Debug.h"
 #include "../util/FileUtil.h"
-#include "../util/RenderUtil.h"
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-GLfloat vertexts[] = {
-        0.0f, 1.0f, -0.1f,
-        1.0f, 0.0f, -0.1f,
-        -1.0f, 0.0f, -0.1f
-};
 
-GLfloat color[] = {1.0f, 0.0f, 0.0f, 1.0f};
-
-char *vertexShaderCode;
-
-char *fragmentShaderCode;
-
-GLuint program;
-
-GLuint mPositionHandle;
-
-GLuint mColorHandle;
-
-Render::Render() {
-
+Render::Render():_triangle(NULL) {
+    _triangle = new Triangle();
 }
 
 Render::~Render() {
-
+    LOGD("~~~~DestoryRender()~~~~~~\n");
+    if(NULL != _triangle)
+    {
+        delete _triangle;
+        _triangle = NULL;
+    }
 }
 
-void Render::init(JNIEnv *env, jobject assetManager) {
+void Render::printGLString(const char *name, GLenum s)
+{
+    const char *v = (const char *) glGetString(s);
+    LOGI("GL %s = %s\n", name, v);
+}
+
+void Render::init() {
     LOGD("~~~init()~~~");
-    AAssetManager *aamIn = AAssetManager_fromJava(env, assetManager);
-    FileUtil::setAAssetManager(aamIn);
+    printGLString("Version", GL_VERSION);
+    printGLString("Vendor", GL_VENDOR);
+    printGLString("Renderer", GL_RENDERER);
+    printGLString("Extensions", GL_EXTENSIONS);
+    glClearColor(0, 0, 0, 0);
+    _triangle->init();
 }
 
 void Render::createEs(JNIEnv *env, jobject assetManager) {
     LOGD("~~~createEs()~~~");
-    init(env, assetManager);
-    glClearColor(0, 0, 0, 0);
-    vertexShaderCode = FileUtil::getStrFromAsset("vertextSource.glsl");
-    fragmentShaderCode = FileUtil::getStrFromAsset("fragmentSource.glsl");
-    program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
+    AAssetManager *aamIn = AAssetManager_fromJava(env, assetManager);
+    FileUtil::setAAssetManager(aamIn);
+    init();
 }
 
 void Render::changeEs(int width, int height) {
     LOGD("~~~changeEs()~~~");
     glViewport(0, 0, width, height);
-    float ratio = (float) width / height;
-    glFrustumf(-ratio, ratio, -1, 1, 3, 7);
+    _triangle->change();
 }
 
 void Render::drawEs() {
     LOGD("~~~drawEs()~~~");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glUseProgram(program);
-    mPositionHandle = (GLuint) glGetAttribLocation(program, "vPosition");
-    LOGI("mPositionHandle = %d\n", mPositionHandle);
-    glEnableVertexAttribArray(mPositionHandle);
-    glVertexAttribPointer(mPositionHandle, 3, GL_FLOAT, GL_FALSE, 3 * 4, vertexts);
-    mColorHandle = (GLuint) glGetUniformLocation(program, "vColor");
-    LOGI("mColorHandle = %d\n", mColorHandle);
-    glUniform4fv(mColorHandle, 1, color);
-    glDrawArrays(GL_TRIANGLES, 0, 9);
-    glDisableVertexAttribArray(mPositionHandle);
+    _triangle->draw();
 }
 
 

@@ -10,12 +10,16 @@
 
 class RenderUtil {
 private:
+    static GLuint program;
+
     static void checkGLError(const char *op);
 
     static GLuint loadShader(GLenum type, const char *shaderCode);
 
 public:
     static GLuint createProgram(const char *vertexCode, const char *fragmentCode);
+
+    static GLuint getFinalProgram();
 
 };
 
