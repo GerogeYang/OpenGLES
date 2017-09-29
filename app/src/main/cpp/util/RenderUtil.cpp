@@ -8,12 +8,14 @@
 GLuint RenderUtil::program = 0;
 
 void RenderUtil::checkGLError(const char *op) {
+    LOGD("~~~checkGLError()~~~\n");
     for (GLint error = glGetError(); error; error = glGetError()) {
         LOGI("after %s() glError (0x%x)\n", op, error);
     }
 }
 
 GLuint RenderUtil::loadShader(GLenum type, const char *shaderCode) {
+    LOGD("~~~loadShader()~~~\n");
     GLuint shader = glCreateShader(type);
     if (shader) {
         glShaderSource(shader, 1, &shaderCode, NULL);
@@ -39,6 +41,7 @@ GLuint RenderUtil::loadShader(GLenum type, const char *shaderCode) {
 }
 
 GLuint RenderUtil::createProgram(const char *vertexCode, const char *fragmentCode) {
+    LOGD("~~~createProgram()~~~\n");
     GLuint vertextShader = loadShader(GL_VERTEX_SHADER, vertexCode);
     if (!vertextShader) {
         return 0;
@@ -57,11 +60,11 @@ GLuint RenderUtil::createProgram(const char *vertexCode, const char *fragmentCod
         glAttachShader(program, framentShader);
         checkGLError("glAttachShader");
         glLinkProgram(program);
-        GLint  linkStatus = GL_FALSE;
-        glGetProgramiv(program,GL_LINK_STATUS,&linkStatus);
-        if (linkStatus != GL_TRUE){
+        GLint linkStatus = GL_FALSE;
+        glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
+        if (linkStatus != GL_TRUE) {
             GLint infoLen = 0;
-            glGetProgramiv(program,GL_INFO_LOG_LENGTH,&infoLen);
+            glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLen);
             if (infoLen) {
                 char *buf = (char *) malloc(sizeof(char) * infoLen);
                 if (buf) {
@@ -78,5 +81,6 @@ GLuint RenderUtil::createProgram(const char *vertexCode, const char *fragmentCod
 }
 
 GLuint RenderUtil::getFinalProgram() {
+    LOGD("~~~getFinalProgram()~~~\n");
     return program;
 }

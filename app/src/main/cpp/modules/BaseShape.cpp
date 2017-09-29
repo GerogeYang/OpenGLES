@@ -16,7 +16,7 @@ void BaseShape::init() {
 
 }
 
-void BaseShape::change() {
+void BaseShape::change(int width, int height) {
 
 }
 

@@ -16,7 +16,7 @@ public:
 
     virtual void init();
 
-    virtual void change();
+    virtual void change(int width, int height);
 
     virtual void draw();
 };

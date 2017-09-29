@@ -14,27 +14,25 @@ extern "C" {
 #endif
 
 
-Render::Render():_triangle(NULL) {
+Render::Render() : _triangle(NULL) {
     _triangle = new Triangle();
 }
 
 Render::~Render() {
-    LOGD("~~~~DestoryRender()~~~~~~\n");
-    if(NULL != _triangle)
-    {
+    LOGD("~~~DestoryRender()~~~\n");
+    if (NULL != _triangle) {
         delete _triangle;
         _triangle = NULL;
     }
 }
 
-void Render::printGLString(const char *name, GLenum s)
-{
+void Render::printGLString(const char *name, GLenum s) {
     const char *v = (const char *) glGetString(s);
     LOGI("GL %s = %s\n", name, v);
 }
 
 void Render::init() {
-    LOGD("~~~init()~~~");
+    LOGD("~~~init()~~~\n");
     printGLString("Version", GL_VERSION);
     printGLString("Vendor", GL_VENDOR);
     printGLString("Renderer", GL_RENDERER);
@@ -44,20 +42,20 @@ void Render::init() {
 }
 
 void Render::createEs(JNIEnv *env, jobject assetManager) {
-    LOGD("~~~createEs()~~~");
+    LOGD("~~~createEs()~~~\n");
     AAssetManager *aamIn = AAssetManager_fromJava(env, assetManager);
     FileUtil::setAAssetManager(aamIn);
     init();
 }
 
 void Render::changeEs(int width, int height) {
-    LOGD("~~~changeEs()~~~");
+    LOGD("~~~changeEs()~~~\n");
     glViewport(0, 0, width, height);
-    _triangle->change();
+    _triangle->change(width, height);
 }
 
 void Render::drawEs() {
-    LOGD("~~~drawEs()~~~");
+    LOGD("~~~drawEs()~~~\n");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     _triangle->draw();
 }

@@ -10,7 +10,7 @@
 #define LOG_TAG   OpenGLES-Native-Debug- // 这个是自定义的LOG的标识
 #define LOGFUC(arg) #arg  //这个是将宏定义转成字符串
 #define LOGFUC1(arg) LOGFUC(arg)
-#define LOGFUC2() LOGFUC1(LOG_TAG)
+#define LOGFUC2() LOGFUC1(LOG_TAG)__FILE__
 
 extern bool debugEnable;
 

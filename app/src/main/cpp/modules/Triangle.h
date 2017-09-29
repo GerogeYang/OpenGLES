@@ -23,6 +23,11 @@ private:
 
     GLuint mMatrixHandle;
 
+
+    GLfloat *mViewMatrix;
+    GLfloat *mProjectMatrix;
+    GLfloat *mMVPMatrix;
+
 public:
     Triangle();
 
@@ -30,7 +35,7 @@ public:
 
     void init();
 
-    void change();
+    void change(int width, int height);
 
     void draw();
 };
