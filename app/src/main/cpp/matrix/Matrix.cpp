@@ -3,6 +3,7 @@
 //
 
 #include "Matrix.h"
+#include "../util/Debug.h"
 
 void Matrix::multiplyMM(float* result, int resultOffset, float* mlIn, int lhsOffset, float* mrIn, int rhsOffset)
 {
@@ -34,7 +35,8 @@ void Matrix::multiplyMM(float* result, int resultOffset, float* mlIn, int lhsOff
     result[14+resultOffset]=(float) (ml[2+lhsOffset]*mr[12+rhsOffset]+ml[6+lhsOffset]*mr[13+rhsOffset]+ml[10+lhsOffset]*mr[14+rhsOffset]+ml[14+lhsOffset]*mr[15+rhsOffset]);
     result[15+resultOffset]=(float) (ml[3+lhsOffset]*mr[12+rhsOffset]+ml[7+lhsOffset]*mr[13+rhsOffset]+ml[11+lhsOffset]*mr[14+rhsOffset]+ml[15+lhsOffset]*mr[15+rhsOffset]);
 }
-void Matrix::multiplyMV (float* resultVec, int resultVecOffset, float* mlIn, int lhsMatOffset, float* vrIn, int rhsVecOffset)
+
+void Matrix::multiplyMV(float* resultVec, int resultVecOffset, float* mlIn, int lhsMatOffset, float* vrIn, int rhsVecOffset)
 {
     double ml[16];
     double vr[4];
@@ -53,7 +55,7 @@ void Matrix::multiplyMV (float* resultVec, int resultVecOffset, float* mlIn, int
     resultVec[3+resultVecOffset]=(float) (ml[3+lhsMatOffset]*vr[0+rhsVecOffset]+ml[7+lhsMatOffset]*vr[1+rhsVecOffset]+ml[11+lhsMatOffset]*vr[2+rhsVecOffset]+ml[15+lhsMatOffset]*vr[3+rhsVecOffset]);
 }
 
-void Matrix::setIdentityM (float* sm, int smOffset)
+void Matrix::setIdentityM(float* sm, int smOffset)
 {
     for(int i=0;i<16;i++)
     {
@@ -65,8 +67,6 @@ void Matrix::setIdentityM (float* sm, int smOffset)
     sm[10]=1;
     sm[15]=1;
 }
-
-
 
 void Matrix::translateM(float* m, int mOffset,float x, float y, float z)
 {
@@ -92,8 +92,8 @@ void Matrix::rotateM(float* m, int mOffset,float a, float x, float y, float z)
 void Matrix::setRotateM(float* m, int mOffset,float a, float x, float y, float z)
 {
     float radians = a * 3.14159f / 180.0f;
-    float s = sin(radians);
-    float c = cos(radians);
+    float s = (float) sin(radians);
+    float c = (float) cos(radians);
     float sm[16];
     setIdentityM(sm, 0);
     sm[0] = c + (1 - c) * x * x;
@@ -140,8 +140,77 @@ void Matrix::transposeM(float* mTrans, int mTransOffset, float* m, int mOffset)
     }
 }
 
+void Matrix::orthoM (float* m, int offset, float left, float right, float bottom, float top, float near, float far)
+{
+    if (left == right){
+        LOGE("~~~IllegalArgument: left == right ~~~\n");
+        return;
+    }
+
+    if (top == bottom){
+        LOGE("~~~IllegalArgument: top == bottom ~~~\n");
+        return;
+    }
+
+    if (near == far){
+        LOGE("~~~IllegalArgument: near == far ~~~\n");
+        return;
+    }
+
+    const float r_width  = 1.0f / (right - left);
+    const float r_height = 1.0f / (top - bottom);
+    const float r_depth  = 1.0f / (near - far);
+    const float x = 2.0f * r_width;
+    const float y = 2.0f * r_height;
+    const float z = -2.0f * r_depth;
+    const float tx = -(right + left) * r_width;
+    const float ty = -(top + bottom) * r_height;
+    const float tz = -(far + near) * r_depth;
+    m[offset + 0] = x;
+    m[offset + 5] = y;
+    m[offset + 10] = z;
+    m[offset + 12] = tx;
+    m[offset + 13] = ty;
+    m[offset + 14] = tz;
+    m[offset + 15] = 1.0f;
+    m[offset + 1] = 0.0f;
+    m[offset + 2] = 0.0f;
+    m[offset + 3] = 0.0f;
+    m[offset + 4] = 0.0f;
+    m[offset + 6] = 0.0f;
+    m[offset + 7] = 0.0f;
+    m[offset + 8] = 0.0f;
+    m[offset + 9] = 0.0f;
+    m[offset + 11] = 0.0f;
+}
+
 void Matrix::frustumM(float* m, int offset, float left, float right, float bottom, float top, float near, float far)
 {
+    if (left == right){
+        LOGE("~~~IllegalArgument: left == right ~~~\n");
+        return;
+    }
+
+    if (top == bottom){
+        LOGE("~~~IllegalArgument: top == bottom ~~~\n");
+        return;
+    }
+
+    if (near == far){
+        LOGE("~~~IllegalArgument: near == far ~~~\n");
+        return;
+    }
+
+    if (near <= 0.0f){
+        LOGE("~~~IllegalArgument: near <= 0.0f ~~~\n");
+        return;
+    }
+
+    if (far <= 0.0f){
+        LOGE("~~~IllegalArgument: far <=0.0f ~~~\n");
+        return;
+    }
+
     const float r_width  = 1.0f / (right - left);
     const float r_height = 1.0f / (top - bottom);
     const float r_depth  = 1.0f / (near - far);
@@ -174,14 +243,14 @@ void Matrix::setLookAtM(float* rm, int rmOffset, float eyeX, float eyeY, float e
     float fx = centerX - eyeX;
     float fy = centerY - eyeY;
     float fz = centerZ - eyeZ;
-    float rlf = 1.0f /sqrt(fx*fx + fy*fy +fz*fz);
+    float rlf = (float) (1.0f /sqrt(fx*fx + fy*fy +fz*fz));
     fx *= rlf;
     fy *= rlf;
     fz *= rlf;
     float sx = fy * upZ - fz * upY;
     float sy = fz * upX - fx * upZ;
     float sz = fx * upY - fy * upX;
-    float rls = 1.0f /sqrt(sx*sx + sy*sy +sz*sz);
+    float rls = (float) (1.0f /sqrt(sx*sx + sy*sy +sz*sz));
     sx *= rls;
     sy *= rls;
     sz *= rls;
