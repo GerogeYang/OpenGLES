@@ -22,6 +22,9 @@ void FileUtil::setAAssetManager(AAssetManager *manager) {
 char* FileUtil::getStrFromAsset(const char *fileName) {
     LOGD("~~~getAssetStr()~~~\n");
     LOGI("~~~fileName = %s~~~\n",fileName);
+    if (NULL == mgr) {
+        return NULL;
+    }
     AAsset *asset = AAssetManager_open(mgr, fileName, AASSET_MODE_UNKNOWN);
     off_t bufferSize = AAsset_getLength(asset);
     char* data = (char*) malloc(sizeof(char)*(bufferSize + 1));
@@ -32,6 +35,10 @@ char* FileUtil::getStrFromAsset(const char *fileName) {
 
 off_t FileUtil::getFileSize(const char *fileName) {
     LOGD("~~~getFileSize()~~~\n");
+    LOGI("~~~fileName = %s~~~\n",fileName);
+    if (NULL == mgr) {
+        return 0;
+    }
     AAsset *asset = AAssetManager_open(mgr, fileName, AASSET_MODE_UNKNOWN);
     if (asset == NULL) {
         LOGE(" %s", "asset==NULL");
@@ -45,6 +52,10 @@ off_t FileUtil::getFileSize(const char *fileName) {
 
 char* FileUtil::getStrFromFile(const char *fileName) {
     LOGD("~~~getStrFromeFile()~~~\n");
+    LOGI("~~~fileName = %s~~~\n",fileName);
+    if (NULL == mgr) {
+        return NULL;
+    }
     FILE *pFile = fopen(fileName, "r");
     char *pBuf;
     fseek(pFile, 0, SEEK_END);

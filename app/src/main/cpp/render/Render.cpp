@@ -14,8 +14,9 @@ extern "C" {
 #endif
 
 
-Render::Render() : _triangle(NULL) {
+Render::Render() : _triangle(NULL),_square(NULL) {
     _triangle = new Triangle();
+    _square = new Square();
 }
 
 Render::~Render() {
@@ -23,6 +24,11 @@ Render::~Render() {
     if (NULL != _triangle) {
         delete _triangle;
         _triangle = NULL;
+    }
+
+    if (NULL != _square) {
+        delete _square;
+        _square = NULL;
     }
 }
 
@@ -39,7 +45,7 @@ void Render::init() {
     printGLString("Extensions", GL_EXTENSIONS);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
     glClearColor(0, 0, 0, 0);
-    _triangle->init();
+    _square->init();
 }
 
 void Render::createEs(JNIEnv *env, jobject assetManager) {
@@ -52,7 +58,7 @@ void Render::createEs(JNIEnv *env, jobject assetManager) {
 void Render::changeEs(int width, int height) {
     LOGD("~~~changeEs()~~~\n");
     glViewport(0, 0, width, height);
-    _triangle->change(width, height);
+    _square->change(width, height);
 }
 
 void Render::drawEs() {
@@ -60,7 +66,7 @@ void Render::drawEs() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    _triangle->draw();
+    _square->draw();
 }
 
 

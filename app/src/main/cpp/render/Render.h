@@ -10,10 +10,13 @@
 #include <android/asset_manager.h>
 #include <GLES/gl.h>
 #include "../modules/Triangle.h"
+#include "../modules/Square.h"
 
 class Render {
 private:
     Triangle *_triangle;
+
+    Square *_square;
 
     void printGLString(const char *name, GLenum s);
 

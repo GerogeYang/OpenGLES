@@ -1,18 +1,17 @@
 //
-// Created by 70889 on 2017/9/22.
+// Created by root on 17-9-30.
 //
 
-#include <GLES/gl.h>
 #include <malloc.h>
-#include "Triangle.h"
+#include "Square.h"
 #include "../util/Debug.h"
 #include "../util/FileUtil.h"
 #include "../util/RenderUtil.h"
 #include "../matrix/Matrix.h"
 
-
 static GLfloat vertices[] = {
         0.5f, 0.5f, 0.0f,// top right
+        -0.5f, 0.5f, 0.0f,//top left
         -0.5f, -0.5f, 0.0f,// bottom left
         0.5f, -0.5f, 0.0f // bottom right
 };
@@ -20,23 +19,25 @@ static GLfloat vertices[] = {
 static GLfloat colors[] = {
         0.0f, 1.0f, 0.0f, 1.0f,
         1.0f, 0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f, 1.0f
+        0.0f, 0.0f, 1.0f, 1.0f,
+        1.0f, 0.0f, 1.0f, 1.0f
 };
 
 static GLushort indexs[] = {
-        0, 1, 2  //逆时针绘图
+        0, 1, 3, 1, 2, 3  //逆时针绘图
 };
 
-Triangle::Triangle() : vertexShaderCode(NULL), fragmentShaderCode(NULL), mPositionHandle(0),
-                       mColorHandle(0), mMatrixHandle(0), mProjectMatrix(NULL), mViewMatrix(NULL),
-                       mMVPMatrix(NULL) {
+
+Square::Square() : vertexShaderCode(NULL), fragmentShaderCode(NULL), mPositionHandle(0),
+                   mColorHandle(0), mMatrixHandle(0), mProjectMatrix(NULL), mViewMatrix(NULL),
+                   mMVPMatrix(NULL) {
     mProjectMatrix = new GLfloat[16];
     mViewMatrix = new GLfloat[16];
     mMVPMatrix = new GLfloat[16];
 }
 
-Triangle::~Triangle() {
-    LOGD("~~~destoryTriangle()~~~\n");
+Square::~Square() {
+    LOGD("~~~destorySquare()~~~\n");
     if (NULL != vertexShaderCode) {
         free(vertexShaderCode);
         vertexShaderCode = NULL;
@@ -63,14 +64,14 @@ Triangle::~Triangle() {
     }
 }
 
-void Triangle::init() {
+void Square::init() {
     LOGD("~~~init()~~~\n");
     vertexShaderCode = FileUtil::getStrFromAsset("vertextSource.glsl");
     fragmentShaderCode = FileUtil::getStrFromAsset("fragmentSource.glsl");
     program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 
-void Triangle::change(int width, int height) {
+void Square::change(int width, int height) {
     LOGD("~~~change()~~~\n");
     float ratio = (float) width / height;
     Matrix::frustumM(mProjectMatrix, 0, -ratio, ratio, -1, 1, 3, 100);
@@ -78,7 +79,7 @@ void Triangle::change(int width, int height) {
     Matrix::multiplyMM(mMVPMatrix, 0, mProjectMatrix, 0, mViewMatrix, 0);
 }
 
-void Triangle::draw() {
+void Square::draw() {
     LOGD("~~~draw()~~~\n");
     glUseProgram(program);
     mMatrixHandle = (GLuint) glGetUniformLocation(program, "vMatrix");
