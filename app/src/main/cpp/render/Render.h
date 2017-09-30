@@ -11,12 +11,15 @@
 #include <GLES/gl.h>
 #include "../modules/Triangle.h"
 #include "../modules/Square.h"
+#include "../modules/Cube.h"
 
 class Render {
 private:
     Triangle *_triangle;
 
     Square *_square;
+
+    Cube *_cube;
 
     void printGLString(const char *name, GLenum s);
 

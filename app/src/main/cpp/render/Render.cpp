@@ -7,6 +7,7 @@
 #include "Render.h"
 #include "../util/Debug.h"
 #include "../util/FileUtil.h"
+#include "../util/RenderUtil.h"
 
 
 #ifdef __cplusplus
@@ -14,9 +15,10 @@ extern "C" {
 #endif
 
 
-Render::Render() : _triangle(NULL),_square(NULL) {
+Render::Render() : _triangle(NULL),_square(NULL),_cube(NULL) {
     _triangle = new Triangle();
     _square = new Square();
+    _cube = new Cube();
 }
 
 Render::~Render() {
@@ -29,6 +31,11 @@ Render::~Render() {
     if (NULL != _square) {
         delete _square;
         _square = NULL;
+    }
+
+    if (NULL != _cube) {
+        delete _cube;
+        _cube = NULL;
     }
 }
 
@@ -43,9 +50,12 @@ void Render::init() {
     printGLString("Vendor", GL_VENDOR);
     printGLString("Renderer", GL_RENDERER);
     printGLString("Extensions", GL_EXTENSIONS);
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
+    //glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
     glClearColor(0, 0, 0, 0);
-    _square->init();
+    glEnable(GL_DEPTH_TEST);
+    //_triangle->init();
+    //_square->init();
+    _cube->init();
 }
 
 void Render::createEs(JNIEnv *env, jobject assetManager) {
@@ -58,15 +68,18 @@ void Render::createEs(JNIEnv *env, jobject assetManager) {
 void Render::changeEs(int width, int height) {
     LOGD("~~~changeEs()~~~\n");
     glViewport(0, 0, width, height);
-    _square->change(width, height);
+    //_triangle->change(width, height);
+    //_square->change(width, height);
+    _cube->change(width, height);
 }
 
 void Render::drawEs() {
     LOGD("~~~drawEs()~~~\n");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    _square->draw();
+    //glShadeModel(GL_SMOOTH);
+    //_triangle->draw();
+    //_square->draw();
+    _cube->draw();
 }
 
 
