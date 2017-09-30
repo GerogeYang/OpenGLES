@@ -11,6 +11,8 @@ class Triangle : public BaseShape {
 private:
     static const int COORDS_PER_VERTEX = 3;
 
+    static const int COORDS_PER_COLORS = 4;
+
     char *vertexShaderCode;
 
     char *fragmentShaderCode;

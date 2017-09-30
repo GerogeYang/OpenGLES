@@ -12,13 +12,20 @@
 
 
 static GLfloat vertices[] = {
-        0.5f, 0.5f, 0.0f, // top
-        -0.5f, -0.5f, 0.0f, // bottom left
-        0.5f, -0.5f, 0.0f  // bottom right
+        0.5f, 0.5f, 0.0f,// top right
+        -0.5f, -0.5f, 0.0f,// bottom left
+        0.5f, -0.5f, 0.0f // bottom right
 };
 
-GLfloat colors[] = {1.0f, 0.0f, 1.0f, 1.0f};
+GLfloat colors[] = {
+        0.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f, 1.0f
+};
 
+static GLushort indexs[] = {
+        0, 1, 2  //逆时针绘图
+};
 
 Triangle::Triangle() : vertexShaderCode(NULL), fragmentShaderCode(NULL), mPositionHandle(0),
                        mColorHandle(0), mMatrixHandle(0), mProjectMatrix(NULL), mViewMatrix(NULL),
@@ -74,7 +81,7 @@ void Triangle::change(int width, int height) {
 void Triangle::draw() {
     LOGD("~~~draw()~~~\n");
     glUseProgram(program);
-    mMatrixHandle = (GLuint)glGetUniformLocation(program, "vMatrix");
+    mMatrixHandle = (GLuint) glGetUniformLocation(program, "vMatrix");
     glUniformMatrix4fv(mMatrixHandle, 1, GL_FALSE, mMVPMatrix);
 
     mPositionHandle = (GLuint) glGetAttribLocation(program, "vPosition");
@@ -82,10 +89,14 @@ void Triangle::draw() {
     glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GL_FLOAT, GL_FALSE,
                           COORDS_PER_VERTEX * sizeof(GLfloat), vertices);
 
-    mColorHandle = (GLuint) glGetUniformLocation(program, "vColor");
-    glUniform4fv(mColorHandle, 1, colors);
+    mColorHandle = (GLuint) glGetAttribLocation(program, "aColor");
+    glEnableVertexAttribArray(mColorHandle);
+    glVertexAttribPointer(mColorHandle, COORDS_PER_COLORS, GL_FLOAT, GL_FALSE,
+                          0, colors);
 
-    glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices) / COORDS_PER_VERTEX);
+    //glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices) / COORDS_PER_VERTEX);
+    glDrawElements(GL_TRIANGLES, sizeof(indexs) / sizeof(GLushort), GL_UNSIGNED_SHORT, indexs);
+
     glDisableVertexAttribArray(mMatrixHandle);
     glDisableVertexAttribArray(mPositionHandle);
     glDisableVertexAttribArray(mColorHandle);
