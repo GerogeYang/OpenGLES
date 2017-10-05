@@ -57,15 +57,15 @@ void Matrix::multiplyMV(float* resultVec, int resultVecOffset, float* mlIn, int 
 
 void Matrix::setIdentityM(float* sm, int smOffset)
 {
-    for(int i=0;i<16;i++)
+    for(int i = 0; i< 16; i++)
     {
-        sm[i]=0;
+        sm[i] = 0.0;
     }
 
-    sm[0]=1;
-    sm[5]=1;
-    sm[10]=1;
-    sm[15]=1;
+    sm[0]=1.0;
+    sm[5]=1.0;
+    sm[10]=1.0;
+    sm[15]=1.0;
 }
 
 void Matrix::translateM(float* m, int mOffset,float x, float y, float z)

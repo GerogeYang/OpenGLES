@@ -20,19 +20,27 @@ private:
 
     GLuint program;
 
-    GLuint mMatrixHandle;
+    GLuint mMMatrixHandle;
+
+    GLuint mMVPMatrixHandle;
+
+    GLuint mCameraHandle;
+
+    GLuint mLightHandle;
 
     GLuint mPositionHandle;
 
+    GLuint mNormalHandle;
+
     GLuint mColorHandle;
 
-    GLuint mLightAmbientHandle;
-
-    GLfloat *mViewMatrix;
-
-    GLfloat *mProjectMatrix;
+    GLfloat *mMMatrix;
 
     GLfloat *mMVPMatrix;
+
+    GLfloat *mCameraLocation;
+
+    GLfloat *mLightLocation;
 
 public:
     Cube();

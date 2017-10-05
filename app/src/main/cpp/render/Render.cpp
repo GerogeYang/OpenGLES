@@ -2,27 +2,25 @@
 // Created by 7088"ES" on 2017/"ES"/22.
 //
 
-#include <GLES2/gl2.h>
-#include <GLES/gl.h>
 #include "Render.h"
 #include "../util/Debug.h"
+#include "../matrixstate/MatrixState.h"
 #include "../util/FileUtil.h"
-#include "../util/RenderUtil.h"
-
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 
-Render::Render() : _triangle(NULL),_square(NULL),_cube(NULL) {
-    _triangle = new Triangle();
-    _square = new Square();
+Render::Render() : _triangle(NULL), _square(NULL), _cube(NULL) {
+    //_triangle = new Triangle();
+    //_square = new Square();
     _cube = new Cube();
 }
 
 Render::~Render() {
     LOGD("~~~destoryRender()~~~\n");
+    MatrixState::destoryMatrixState();
     if (NULL != _triangle) {
         delete _triangle;
         _triangle = NULL;
@@ -53,6 +51,8 @@ void Render::init() {
     //glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
     glClearColor(0, 0, 0, 0);
     glEnable(GL_DEPTH_TEST);
+    MatrixState::init();
+    MatrixState::setLightLocation(30.0f, 50.0f, 500.0f);
     //_triangle->init();
     //_square->init();
     _cube->init();
@@ -68,6 +68,9 @@ void Render::createEs(JNIEnv *env, jobject assetManager) {
 void Render::changeEs(int width, int height) {
     LOGD("~~~changeEs()~~~\n");
     glViewport(0, 0, width, height);
+    float ratio = (float) width / height;
+    MatrixState::setProjectFrustum(-ratio, ratio, -1, 1, 3, 200);
+    MatrixState::setCamera(5.0f, 5.0f, 10.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
     //_triangle->change(width, height);
     //_square->change(width, height);
     _cube->change(width, height);
