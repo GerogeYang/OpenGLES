@@ -108,8 +108,6 @@ void Cube::init() {
 
 void Cube::change(int width, int height) {
     LOGD("~~~change()~~~\n");
-    mMMatrix = MatrixState::getMixMatrix();
-    mMVPMatrix = MatrixState::getFinalMVPMatrix();
     mCameraLocation = MatrixState::getCameraLocation();
     mLightLocation = MatrixState::getLightLocation();
 }
@@ -117,6 +115,9 @@ void Cube::change(int width, int height) {
 void Cube::draw() {
     LOGD("~~~draw()~~~\n");
     glUseProgram(program);
+    mMMatrix = MatrixState::getMixMatrix();
+    mMVPMatrix = MatrixState::getFinalMVPMatrix();
+
     mMMatrixHandle = (GLuint) glGetUniformLocation(program, "uMMatrix");
     glEnableVertexAttribArray(mMMatrixHandle);
     glUniformMatrix4fv(mMMatrixHandle, 1, GL_FALSE, mMMatrix);

@@ -102,7 +102,7 @@ GLfloat *MatrixState::getMixMatrix() {
 }
 
 GLfloat *MatrixState::getFinalMVPMatrix() {
-    Matrix::multiplyMM(mMVPMatrix, 0, mCurMatrix, 0, mViewMatrix, 0);
+    Matrix::multiplyMM(mMVPMatrix, 0, mViewMatrix, 0, mCurMatrix, 0);
     Matrix::multiplyMM(mMVPMatrix, 0, mProjectMatrix, 0, mMVPMatrix, 0);
     return mMVPMatrix;
 }

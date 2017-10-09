@@ -57,15 +57,12 @@ void Matrix::multiplyMV(float* resultVec, int resultVecOffset, float* mlIn, int 
 
 void Matrix::setIdentityM(float* sm, int smOffset)
 {
-    for(int i = 0; i< 16; i++)
-    {
-        sm[i] = 0.0;
+    for (int i=0 ; i<16 ; i++) {
+        sm[smOffset + i] = 0;
     }
-
-    sm[0]=1.0;
-    sm[5]=1.0;
-    sm[10]=1.0;
-    sm[15]=1.0;
+    for(int i = 0; i < 16; i += 5) {
+        sm[smOffset + i] = 1.0f;
+    }
 }
 
 void Matrix::translateM(float* m, int mOffset,float x, float y, float z)
@@ -82,7 +79,7 @@ void Matrix::rotateM(float* m, int mOffset,float a, float x, float y, float z)
     float rm[16];
     setRotateM(rm, 0, a, x, y, z);
     float rem[16];
-    multiplyMM(rem, 0, m, 0, rm, 0);
+    multiplyMM(rem, 0, m, mOffset, rm, 0);
     for(int i=0;i<16;i++)
     {
         m[i]=rem[i];
@@ -91,7 +88,7 @@ void Matrix::rotateM(float* m, int mOffset,float a, float x, float y, float z)
 
 void Matrix::setRotateM(float* m, int mOffset,float a, float x, float y, float z)
 {
-    float radians = a * 3.14159f / 180.0f;
+    float radians =(float) (a * M_PI/ 180.0f);
     float s = (float) sin(radians);
     float c = (float) cos(radians);
     float sm[16];
@@ -114,17 +111,11 @@ void Matrix::setRotateM(float* m, int mOffset,float a, float x, float y, float z
 
 void Matrix::scaleM(float* m, int mOffset, float x, float y, float z)
 {
-    float sm[16];
-    setIdentityM(sm, 0);
-    sm[0] = x;
-    sm[5] = y;
-    sm[10] = z;
-    sm[15] = 1;
-    float tm[16];
-    multiplyMM(tm,0,m,0,sm,0);
-    for(int i=0;i<16;i++)
-    {
-        m[i]=tm[i];
+    for (int i=0 ; i<4 ; i++) {
+        int mi = mOffset + i;
+        m[     mi] *= x;
+        m[ 4 + mi] *= y;
+        m[ 8 + mi] *= z;
     }
 }
 

@@ -69,10 +69,10 @@ void Render::changeEs(int width, int height) {
     LOGD("~~~changeEs()~~~\n");
     glViewport(0, 0, width, height);
     float ratio = (float) width / height;
-    MatrixState::setProjectFrustum(-ratio, ratio, -1, 1, 3, 200);
+    MatrixState::setProjectFrustum(-ratio, ratio, -1, 1, 3, 500);
     MatrixState::setCamera(5.0f, 5.0f, 10.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-    //_triangle->change(width, height);
-    //_square->change(width, height);
+    //_triangle->change(width,height);
+    //_square->change(width,height);
     _cube->change(width, height);
 }
 
@@ -82,6 +82,7 @@ void Render::drawEs() {
     //glShadeModel(GL_SMOOTH);
     //_triangle->draw();
     //_square->draw();
+    MatrixState::rotate(5, 0.0, 1.0, 0.0);
     _cube->draw();
 }
 

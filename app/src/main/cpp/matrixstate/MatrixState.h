@@ -6,6 +6,8 @@
 #define OPENGLES_MATRIXSTATE_H
 
 
+#include <GLES2/gl2.h>
+
 class MatrixState {
 private:
     static int stackTop;
