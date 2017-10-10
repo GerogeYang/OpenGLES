@@ -10,8 +10,8 @@ varying vec4 vAmbient;
 varying vec4 vDiffuse;
 varying vec4 vSpecular;
 
-void directionLight(in vec4 normal, inout vec4 ambient, inout vec4 diffuse, inout vec4 specular,
-                        in vec3 lightDirection, in vec4 lightAmbient, in vec4 lightDiffuse, in vec4 lightSpecular){
+void directionLight(in vec4 normal, inout vec4 ambient, inout vec4 diffuse, inout vec4 specular, in vec3 lightDirection,
+                        in vec4 lightAmbient, in vec4 lightDiffuse, in vec4 lightSpecular){
     ambient = lightAmbient;
     vec4 normalTarget = aPosition + aNormal;
     vec3 newNormal = (uMMatrix*normalTarget - uMMatrix*aPosition).xyz;
@@ -30,10 +30,10 @@ void directionLight(in vec4 normal, inout vec4 ambient, inout vec4 diffuse, inou
 void main() {
     gl_Position = uMVPMatrix*aPosition;
     vec4 ambientTmp, diffuseTmp, specularTmp;
-    directionLight(normalize(aNormal), ambientTmp, diffuseTmp, specularTmp,
-            ulightDirection, vec4(0.15, 0.15, 0.15, 1.0), vec4(0.8, 0.8, 0.8, 1.0), vec4(0.7, 0.7, 0.7, 1.0));
+    directionLight(normalize(aNormal), ambientTmp, diffuseTmp, specularTmp, ulightDirection,
+                        vec4(0.15, 0.15, 0.15, 1.0), vec4(0.8, 0.8, 0.8, 1.0), vec4(0.7, 0.7, 0.7, 1.0));
+    vColor = aColor;
     vAmbient = ambientTmp;
     vDiffuse = diffuseTmp;
     vSpecular = specularTmp;
-    vColor = aColor;
 }
