@@ -12,7 +12,7 @@ GLfloat **MatrixState::mStack;
 GLfloat *MatrixState::mCurMatrix;
 GLfloat *MatrixState::mViewMatrix;
 GLfloat *MatrixState::mProjectMatrix;
-GLfloat *MatrixState::mMVPMatrix ;
+GLfloat *MatrixState::mMVPMatrix;
 GLfloat *MatrixState::cameraLocation;
 GLfloat *MatrixState::lightLocation;
 

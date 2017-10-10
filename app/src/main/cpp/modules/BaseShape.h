@@ -10,6 +10,7 @@
 
 class BaseShape {
 private:
+    virtual void setMatrix();
 
 public:
     BaseShape();
@@ -18,9 +19,10 @@ public:
 
     virtual void init();
 
-    virtual void change(int width, int height);
+    virtual void change();
 
     virtual void draw();
+
 };
 
 

@@ -64,6 +64,7 @@ public:
     static GLfloat *getFinalMVPMatrix();
 
     static void destoryMatrixState();
+    
 };
 
 

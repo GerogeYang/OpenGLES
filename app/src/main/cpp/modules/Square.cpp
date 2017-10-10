@@ -7,7 +7,7 @@
 #include "../util/Debug.h"
 #include "../util/FileUtil.h"
 #include "../util/RenderUtil.h"
-#include "../matrix/Matrix.h"
+#include "../matrixstate/MatrixState.h"
 
 static GLfloat vertices[] = {
         0.5f, 0.5f, 0.0f,// top right
@@ -28,12 +28,11 @@ static GLushort indexs[] = {
 };
 
 
-Square::Square() : vertexShaderCode(NULL), fragmentShaderCode(NULL), mPositionHandle(0),
-                   mColorHandle(0), mMatrixHandle(0), mProjectMatrix(NULL), mViewMatrix(NULL),
-                   mMVPMatrix(NULL) {
-    mProjectMatrix = new GLfloat[16];
-    mViewMatrix = new GLfloat[16];
-    mMVPMatrix = new GLfloat[16];
+Square::Square() : vertexShaderCode(NULL), fragmentShaderCode(NULL),
+                   program(0), mMMatrixHandle(0), mMVPMatrixHandle(0), mCameraHandle(0),
+                   mLightHandle(0), mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
+                   mMMatrix(NULL), mMVPMatrix(NULL), mCamera(NULL), mLightLocation(NULL),
+                   tx(0.0), ty(0.0), tz(0.0), rot(0.0), sx(1.0), sy(1.0), sz(1.0) {
 }
 
 Square::~Square() {
@@ -47,21 +46,6 @@ Square::~Square() {
         free(fragmentShaderCode);
         fragmentShaderCode = NULL;
     }
-
-    if (NULL != mProjectMatrix) {
-        delete mProjectMatrix;
-        mProjectMatrix = NULL;
-    }
-
-    if (NULL != mViewMatrix) {
-        delete mViewMatrix;
-        mViewMatrix = NULL;
-    }
-
-    if (NULL != mMVPMatrix) {
-        delete mMVPMatrix;
-        mMVPMatrix = NULL;
-    }
 }
 
 void Square::init() {
@@ -71,21 +55,33 @@ void Square::init() {
     program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 
-void Square::change(int width, int height) {
+void Square::change() {
     LOGD("~~~change()~~~\n");
-    float ratio = (float) width / height;
-    Matrix::frustumM(mProjectMatrix, 0, -ratio, ratio, -1, 1, 3, 100);
-    Matrix::setLookAtM(mViewMatrix, 0, 0.0f, 0.0f, 7.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-    Matrix::multiplyMM(mMVPMatrix, 0, mProjectMatrix, 0, mViewMatrix, 0);
+    mCamera = MatrixState::getCameraLocation();
+    mLightLocation = MatrixState::getLightLocation();
+}
+
+void Square::setMatrix() {
+    MatrixState::rotate(rot, 0.0, 0.0, 1.0);
+    if (rot < 360) {
+        rot += 5;
+    } else {
+        rot = 0;
+    }
 }
 
 void Square::draw() {
     LOGD("~~~draw()~~~\n");
-    glUseProgram(program);
-    mMatrixHandle = (GLuint) glGetUniformLocation(program, "vMatrix");
-    glUniformMatrix4fv(mMatrixHandle, 1, GL_FALSE, mMVPMatrix);
+    setMatrix();
 
-    mPositionHandle = (GLuint) glGetAttribLocation(program, "vPosition");
+    glUseProgram(program);
+
+    mMVPMatrix = MatrixState::getFinalMVPMatrix();
+
+    mMVPMatrixHandle = (GLuint) glGetUniformLocation(program, "uMVPMatrix");
+    glUniformMatrix4fv(mMVPMatrixHandle, 1, GL_FALSE, mMVPMatrix);
+
+    mPositionHandle = (GLuint) glGetAttribLocation(program, "aPosition");
     glEnableVertexAttribArray(mPositionHandle);
     glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GL_FLOAT, GL_FALSE,
                           COORDS_PER_VERTEX * sizeof(GLfloat), vertices);
@@ -98,7 +94,6 @@ void Square::draw() {
     //glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices) / COORDS_PER_VERTEX);
     glDrawElements(GL_TRIANGLES, sizeof(indexs) / sizeof(GLushort), GL_UNSIGNED_SHORT, indexs);
 
-    glDisableVertexAttribArray(mMatrixHandle);
     glDisableVertexAttribArray(mPositionHandle);
     glDisableVertexAttribArray(mColorHandle);
 }

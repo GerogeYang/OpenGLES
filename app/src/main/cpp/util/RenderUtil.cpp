@@ -60,8 +60,8 @@ GLuint RenderUtil::createProgram(const char *vertexCode, const char *fragmentCod
         glAttachShader(program, framentShader);
         checkGLError("glAttachShader");
         glLinkProgram(program);
-        glDetachShader(program,vertextShader);
-        glDetachShader(program,framentShader);
+        glDetachShader(program, vertextShader);
+        glDetachShader(program, framentShader);
         glDeleteShader(vertextShader);
         glDeleteShader(framentShader);
         GLint linkStatus = GL_FALSE;

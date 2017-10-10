@@ -38,9 +38,13 @@ private:
 
     GLfloat *mMVPMatrix;
 
-    GLfloat *mCameraLocation;
+    GLfloat *mCamera;
 
     GLfloat *mLightLocation;
+
+    float tx,ty,tz,rot,sx,sy,sz;
+
+    void setMatrix();
 
 public:
     Cube();
@@ -49,9 +53,10 @@ public:
 
     void init();
 
-    void change(int width, int height);
+    void change();
 
     void draw();
+
 };
 
 

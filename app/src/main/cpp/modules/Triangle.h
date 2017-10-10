@@ -19,17 +19,31 @@ private:
 
     GLuint program;
 
+    GLuint mMMatrixHandle;
+
+    GLuint mMVPMatrixHandle;
+
+    GLuint mCameraHandle;
+
+    GLuint mLightHandle;
+
     GLuint mPositionHandle;
+
+    GLuint mNormalHandle;
 
     GLuint mColorHandle;
 
-    GLuint mMatrixHandle;
-
-    GLfloat *mViewMatrix;
-
-    GLfloat *mProjectMatrix;
+    GLfloat *mMMatrix;
 
     GLfloat *mMVPMatrix;
+
+    GLfloat *mCamera;
+
+    GLfloat *mLightLocation;
+
+    float tx,ty,tz,rot,sx,sy,sz;
+
+    void setMatrix();
 
 public:
     Triangle();
@@ -38,9 +52,10 @@ public:
 
     void init();
 
-    void change(int width, int height);
+    void change();
 
     void draw();
+
 };
 
 

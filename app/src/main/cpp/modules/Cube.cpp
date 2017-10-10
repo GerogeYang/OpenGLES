@@ -81,9 +81,10 @@ static GLfloat normals[] = {
 };
 
 Cube::Cube() : vertexShaderCode(NULL), fragmentShaderCode(NULL),
-               mMMatrixHandle(0), mMVPMatrixHandle(0), mCameraHandle(0), mLightHandle(0),
-               mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
-               mMMatrix(NULL), mMVPMatrix(NULL), mCameraLocation(NULL), mLightLocation(NULL) {
+               program(0), mMMatrixHandle(0), mMVPMatrixHandle(0), mCameraHandle(0),
+               mLightHandle(0), mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
+               mMMatrix(NULL), mMVPMatrix(NULL), mCamera(NULL), mLightLocation(NULL),
+               tx(0.0), ty(0.0), tz(0.0), rot(0.0), sx(1.0), sy(1.0), sz(1.0) {
 }
 
 Cube::~Cube() {
@@ -106,33 +107,41 @@ void Cube::init() {
     program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 
-void Cube::change(int width, int height) {
+void Cube::change() {
     LOGD("~~~change()~~~\n");
-    mCameraLocation = MatrixState::getCameraLocation();
+    mCamera = MatrixState::getCameraLocation();
     mLightLocation = MatrixState::getLightLocation();
+}
+
+void Cube::setMatrix() {
+    MatrixState::rotate(rot, 0.0, 1.0, 0.0);
+    if (rot < 360) {
+        rot += 5;
+    } else {
+        rot = 0;
+    }
 }
 
 void Cube::draw() {
     LOGD("~~~draw()~~~\n");
+    setMatrix();
+
     glUseProgram(program);
+
     mMMatrix = MatrixState::getMixMatrix();
     mMVPMatrix = MatrixState::getFinalMVPMatrix();
 
+    mCameraHandle = (GLuint) glGetUniformLocation(program, "uCamera");
+    glUniform3fv(mCameraHandle, 1, mCamera);
+
+    mLightHandle = (GLuint) glGetUniformLocation(program, "uLightDirection");
+    glUniform3fv(mLightHandle, 1, mLightLocation);
+
     mMMatrixHandle = (GLuint) glGetUniformLocation(program, "uMMatrix");
-    glEnableVertexAttribArray(mMMatrixHandle);
     glUniformMatrix4fv(mMMatrixHandle, 1, GL_FALSE, mMMatrix);
 
     mMVPMatrixHandle = (GLuint) glGetUniformLocation(program, "uMVPMatrix");
-    glEnableVertexAttribArray(mMVPMatrixHandle);
     glUniformMatrix4fv(mMVPMatrixHandle, 1, GL_FALSE, mMVPMatrix);
-
-    mCameraHandle = (GLuint) glGetUniformLocation(program, "uCamera");
-    glEnableVertexAttribArray(mCameraHandle);
-    glUniform3fv(mCameraHandle, 1, mCameraLocation);
-
-    mLightHandle = (GLuint) glGetUniformLocation(program, "ulightDirection");
-    glEnableVertexAttribArray(mLightHandle);
-    glUniform3fv(mLightHandle, 1, mLightLocation);
 
     mPositionHandle = (GLuint) glGetAttribLocation(program, "aPosition");
     glEnableVertexAttribArray(mPositionHandle);
@@ -151,10 +160,6 @@ void Cube::draw() {
 
     glDrawElements(GL_TRIANGLES, sizeof(indexs) / sizeof(GLushort), GL_UNSIGNED_SHORT, indexs);
 
-    glDisableVertexAttribArray(mMMatrixHandle);
-    glDisableVertexAttribArray(mMVPMatrixHandle);
-    glDisableVertexAttribArray(mCameraHandle);
-    glDisableVertexAttribArray(mLightHandle);
     glDisableVertexAttribArray(mPositionHandle);
     glDisableVertexAttribArray(mNormalHandle);
     glDisableVertexAttribArray(mColorHandle);
