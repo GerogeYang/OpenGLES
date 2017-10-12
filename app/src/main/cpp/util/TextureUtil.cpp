@@ -187,6 +187,7 @@ gl_texture_t *TextureUtil::getOtherImangeFromAsset(const char *imageFileName) {
     texinfo->internalFormat = 3;
     texinfo->format = GL_RGB;
     texinfo->texels = texels;
+    return texinfo;
 }
 
 GLuint TextureUtil::loadTextures(const char *fileName) {

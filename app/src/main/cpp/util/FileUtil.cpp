@@ -71,8 +71,7 @@ char* FileUtil::getStrFromFile(const char *fileName) {
 
 char* FileUtil::getPostFix(const char *fileName) {
     char *ext=strrchr(fileName,'.');
-    if (ext)
-    {
+    if (ext) {
         *ext='\0';
         ext++;
     }
