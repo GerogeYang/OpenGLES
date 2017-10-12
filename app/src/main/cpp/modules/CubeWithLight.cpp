@@ -4,7 +4,7 @@
 
 #include <malloc.h>
 #include <GLES/gl.h>
-#include "Cube.h"
+#include "CubeWithLight.h"
 #include "../util/Debug.h"
 #include "../util/FileUtil.h"
 #include "../util/RenderUtil.h"
@@ -80,14 +80,14 @@ static GLfloat normals[] = {
         0.0f, 0.417775f, 0.675974f,
 };
 
-Cube::Cube() : vertexShaderCode(NULL), fragmentShaderCode(NULL),
+CubeWithLight::CubeWithLight() : vertexShaderCode(NULL), fragmentShaderCode(NULL),
                program(0), mMMatrixHandle(0), mMVPMatrixHandle(0), mCameraHandle(0),
                mLightHandle(0), mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
                mMMatrix(NULL), mMVPMatrix(NULL), mCamera(NULL), mLightLocation(NULL),
                tx(0.0), ty(0.0), tz(0.0), rot(0.0), sx(1.0), sy(1.0), sz(1.0) {
 }
 
-Cube::~Cube() {
+CubeWithLight::~CubeWithLight() {
     LOGD("~~~destoryCube()~~~\n");
     if (NULL != vertexShaderCode) {
         free(vertexShaderCode);
@@ -100,20 +100,20 @@ Cube::~Cube() {
     }
 }
 
-void Cube::init() {
+void CubeWithLight::init() {
     LOGD("~~~init()~~~\n");
-    vertexShaderCode = FileUtil::getStrFromAsset("cubeVertextSource.glsl");
-    fragmentShaderCode = FileUtil::getStrFromAsset("cubeFragmentSource.glsl");
+    vertexShaderCode = FileUtil::getStrFromAsset("vertextWithLight.glsl");
+    fragmentShaderCode = FileUtil::getStrFromAsset("fragmentWithLight.glsl");
     program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 
-void Cube::change() {
+void CubeWithLight::change() {
     LOGD("~~~change()~~~\n");
     mCamera = MatrixState::getCameraLocation();
     mLightLocation = MatrixState::getLightLocation();
 }
 
-void Cube::setMatrix() {
+void CubeWithLight::setMatrix() {
     MatrixState::rotate(rot, 0.0, 1.0, 0.0);
     if (rot < 360) {
         rot += 5;
@@ -122,7 +122,7 @@ void Cube::setMatrix() {
     }
 }
 
-void Cube::draw() {
+void CubeWithLight::draw() {
     LOGD("~~~draw()~~~\n");
     setMatrix();
 

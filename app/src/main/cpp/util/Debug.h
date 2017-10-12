@@ -2,8 +2,8 @@
 // Created by 70889 on 2017/9/22.
 //
 
-#ifndef OPENGLES_DEBUG_LOG_H
-#define OPENGLES_DEBUG_LOG_H
+#ifndef OPENGLES_DEBUG_H
+#define OPENGLES_DEBUG_H
 
 #include <android/log.h>
 
@@ -25,4 +25,4 @@ class Debug {
 private:
 };
 
-#endif //OPENGLES_DEBUG_LOG_H
+#endif //OPENGLES_DEBUG_H

@@ -2,13 +2,13 @@
 // Created by root on 17-9-30.
 //
 
-#ifndef OPENGLES_BALL_H
-#define OPENGLES_BALL_H
+#ifndef OPENGLES_CUBEWITHLIGHT_H
+#define OPENGLES_CUBEWITHLIGHT_H
 
 
 #include "BaseShape.h"
 
-class Cube : public BaseShape {
+class CubeWithLight : public BaseShape {
 private:
     static const int COORDS_PER_VERTEX = 3;
 
@@ -47,9 +47,9 @@ private:
     void setMatrix();
 
 public:
-    Cube();
+    CubeWithLight();
 
-    ~Cube();
+    ~CubeWithLight();
 
     void init();
 
@@ -60,4 +60,4 @@ public:
 };
 
 
-#endif //OPENGLES_BALL_H
+#endif //OPENGLES_CUBEWITHLIGHT_H

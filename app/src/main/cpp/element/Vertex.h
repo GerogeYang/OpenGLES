@@ -2,8 +2,8 @@
 // Created by 70889 on 2017/9/22.
 //
 
-#ifndef OPENGLES_VERTEX3D_H
-#define OPENGLES_VERTEX3D_H
+#ifndef OPENGLES_VERTEX_H
+#define OPENGLES_VERTEX_H
 
 #ifndef OPENGLES_GL_H
 #define OPENGLES_GL_H
@@ -27,4 +27,4 @@ public:
 };
 
 
-#endif //OPENGLES_VERTEX3D_H
+#endif //OPENGLES_VERTEX_H

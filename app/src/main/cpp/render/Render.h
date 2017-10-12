@@ -11,7 +11,7 @@
 #include <GLES/gl.h>
 #include "../modules/Triangle.h"
 #include "../modules/Square.h"
-#include "../modules/Cube.h"
+#include "../modules/CubeWithLight.h"
 
 class Render {
 private:
@@ -19,7 +19,7 @@ private:
 
     Square *_square;
 
-    Cube *_cube;
+    CubeWithLight *_cubeWithLight;
 
     void printGLString(const char *name, GLenum s);
 

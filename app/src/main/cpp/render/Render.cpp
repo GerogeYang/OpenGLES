@@ -12,10 +12,10 @@ extern "C" {
 #endif
 
 
-Render::Render() : _triangle(NULL), _square(NULL), _cube(NULL) {
-    _triangle = new Triangle();
-    _square = new Square();
-    _cube = new Cube();
+Render::Render() : _triangle(NULL), _square(NULL), _cubeWithLight(NULL) {
+    //_triangle = new Triangle();
+    //_square = new Square();
+    _cubeWithLight = new CubeWithLight();
 }
 
 Render::~Render() {
@@ -31,9 +31,9 @@ Render::~Render() {
         _square = NULL;
     }
 
-    if (NULL != _cube) {
-        delete _cube;
-        _cube = NULL;
+    if (NULL != _cubeWithLight) {
+        delete _cubeWithLight;
+        _cubeWithLight = NULL;
     }
 }
 
@@ -53,9 +53,9 @@ void Render::init() {
     glEnable(GL_DEPTH_TEST);
     MatrixState::init();
     MatrixState::setLightLocation(30.0f, 50.0f, 500.0f);
-    _triangle->init();
-    _square->init();
-    _cube->init();
+    //_triangle->init();
+    //_square->init();
+    _cubeWithLight->init();
 }
 
 void Render::createEs(JNIEnv *env, jobject assetManager) {
@@ -71,16 +71,16 @@ void Render::changeEs(int width, int height) {
     float ratio = (float) width / height;
     MatrixState::setProjectFrustum(-ratio, ratio, -1, 1, 3, 500);
     MatrixState::setCamera(5.0f, 5.0f, 10.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-    _triangle->change();
-    _square->change();
-    _cube->change();
+    //_triangle->change();
+    //_square->change();
+    _cubeWithLight->change();
 }
 
 void Render::drawEs() {
     LOGD("~~~drawEs()~~~\n");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //glShadeModel(GL_SMOOTH);
-    MatrixState::pushMatrix();
+/*    MatrixState::pushMatrix();
     MatrixState::translate(0.0, 1.5f, 0.0);
     _triangle->draw();
     MatrixState::popMatrix();
@@ -88,11 +88,11 @@ void Render::drawEs() {
     MatrixState::pushMatrix();
     MatrixState::translate(-3.0f, -1.5f, 0.0);
     _square->draw();
-    MatrixState::popMatrix();
+    MatrixState::popMatrix();*/
 
     MatrixState::pushMatrix();
-    MatrixState::translate(1.5f, 0.0, 0.0);
-    _cube->draw();
+    //MatrixState::translate(1.5f, 0.0, 0.0);
+    _cubeWithLight->draw();
     MatrixState::popMatrix();
 }
 
