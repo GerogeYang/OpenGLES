@@ -97,7 +97,7 @@ GLfloat *MatrixState::getLightLocation() {
     return lightLocation;
 }
 
-GLfloat *MatrixState::getMixMatrix() {
+GLfloat *MatrixState::getMMatrix() {
     return mCurMatrix;
 }
 

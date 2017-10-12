@@ -2,12 +2,11 @@
 // Created by 70889 on 2017/9/22.
 //
 
-#include <GLES/gl.h>
 #include <malloc.h>
 #include "Triangle.h"
 #include "../util/Debug.h"
 #include "../util/FileUtil.h"
-#include "../util/RenderUtil.h"
+#include "../util/ShaderUtil.h"
 #include "../matrixstate/MatrixState.h"
 
 
@@ -27,10 +26,9 @@ static GLushort indexs[] = {
         0, 1, 2  //逆时针绘图
 };
 
-Triangle::Triangle() : vertexShaderCode(NULL), fragmentShaderCode(NULL),
+Triangle::Triangle() : vertexShaderCode(NULL), fragmentShaderCode(NULL), mMMatrix(NULL), mMVPMatrix(NULL),
                        program(0), mMMatrixHandle(0), mMVPMatrixHandle(0), mCameraHandle(0),
                        mLightHandle(0), mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
-                       mMMatrix(NULL), mMVPMatrix(NULL), mCamera(NULL), mLightLocation(NULL),
                        tx(0.0), ty(0.0), tz(0.0), rot(0.0), sx(1.0), sy(1.0), sz(1.0) {
 
 }
@@ -52,27 +50,24 @@ void Triangle::init() {
     LOGD("~~~init()~~~\n");
     vertexShaderCode = FileUtil::getStrFromAsset("vertext.glsl");
     fragmentShaderCode = FileUtil::getStrFromAsset("fragment.glsl");
-    program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
+    program = ShaderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 
 void Triangle::change() {
     LOGD("~~~change()~~~\n");
-    mCamera = MatrixState::getCameraLocation();
-    mLightLocation = MatrixState::getLightLocation();
+
 }
 
-void Triangle::setMatrix() {
-
+void Triangle::setMMatrix() {
+    LOGD("~~~setMMatrix()~~~\n");
 }
 
 void Triangle::draw() {
     LOGD("~~~draw()~~~\n");
     glUseProgram(program);
 
-    mMVPMatrix = MatrixState::getFinalMVPMatrix();
-
     mMVPMatrixHandle = (GLuint) glGetUniformLocation(program, "uMVPMatrix");
-    glUniformMatrix4fv(mMVPMatrixHandle, 1, GL_FALSE, mMVPMatrix);
+    glUniformMatrix4fv(mMVPMatrixHandle, 1, GL_FALSE, MatrixState::getFinalMVPMatrix());
 
     mPositionHandle = (GLuint) glGetAttribLocation(program, "aPosition");
     glEnableVertexAttribArray(mPositionHandle);

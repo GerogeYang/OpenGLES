@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <malloc.h>
+#include <string.h>
 #include "FileUtil.h"
 #include "Debug.h"
 
@@ -66,6 +67,16 @@ char* FileUtil::getStrFromFile(const char *fileName) {
     pBuf[len] = 0;
     fclose(pFile);
     return pBuf;
+}
+
+char* FileUtil::getPostFix(const char *fileName) {
+    char *ext=strrchr(fileName,'.');
+    if (ext)
+    {
+        *ext='\0';
+        ext++;
+    }
+    return ext;
 }
 
 #ifdef __cplusplus

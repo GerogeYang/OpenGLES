@@ -59,7 +59,7 @@ public:
 
     static GLfloat *getLightLocation();
 
-    static GLfloat *getMixMatrix();
+    static GLfloat *getMMatrix();
 
     static GLfloat *getFinalMVPMatrix();
 

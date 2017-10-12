@@ -8,10 +8,10 @@
 #include <jni.h>
 #include <android/asset_manager_jni.h>
 #include <android/asset_manager.h>
-#include <GLES/gl.h>
 #include "../modules/Triangle.h"
 #include "../modules/Square.h"
 #include "../modules/CubeWithLight.h"
+#include "../modules/TriangleWithTexture.h"
 
 class Render {
 private:
@@ -20,6 +20,8 @@ private:
     Square *_square;
 
     CubeWithLight *_cubeWithLight;
+
+    TriangleWithTexture *_triangleWithTexture;
 
     void printGLString(const char *name, GLenum s);
 

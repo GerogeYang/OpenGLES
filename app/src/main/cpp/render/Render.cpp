@@ -12,10 +12,11 @@ extern "C" {
 #endif
 
 
-Render::Render() : _triangle(NULL), _square(NULL), _cubeWithLight(NULL) {
-    //_triangle = new Triangle();
-    //_square = new Square();
-    _cubeWithLight = new CubeWithLight();
+Render::Render() : _triangle(NULL), _square(NULL), _cubeWithLight(NULL), _triangleWithTexture(NULL) {
+/*    _triangle = new Triangle();
+    _square = new Square();
+    _cubeWithLight = new CubeWithLight();*/
+    _triangleWithTexture = new TriangleWithTexture();
 }
 
 Render::~Render() {
@@ -35,6 +36,11 @@ Render::~Render() {
         delete _cubeWithLight;
         _cubeWithLight = NULL;
     }
+
+    if (NULL != _triangleWithTexture) {
+        delete _triangleWithTexture;
+        _triangleWithTexture = NULL;
+    }
 }
 
 void Render::printGLString(const char *name, GLenum s) {
@@ -48,14 +54,14 @@ void Render::init() {
     printGLString("Vendor", GL_VENDOR);
     printGLString("Renderer", GL_RENDERER);
     printGLString("Extensions", GL_EXTENSIONS);
-    //glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
     glClearColor(0, 0, 0, 0);
     glEnable(GL_DEPTH_TEST);
     MatrixState::init();
     MatrixState::setLightLocation(30.0f, 50.0f, 500.0f);
-    //_triangle->init();
-    //_square->init();
-    _cubeWithLight->init();
+/*    _triangle->init();
+    _square->init();
+    _cubeWithLight->init();*/
+    _triangleWithTexture->init();
 }
 
 void Render::createEs(JNIEnv *env, jobject assetManager) {
@@ -71,29 +77,19 @@ void Render::changeEs(int width, int height) {
     float ratio = (float) width / height;
     MatrixState::setProjectFrustum(-ratio, ratio, -1, 1, 3, 500);
     MatrixState::setCamera(5.0f, 5.0f, 10.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-    //_triangle->change();
-    //_square->change();
-    _cubeWithLight->change();
+    /*_triangle->change();
+    _square->change();
+    _cubeWithLight->change();*/
+    _triangleWithTexture->change();
 }
 
 void Render::drawEs() {
     LOGD("~~~drawEs()~~~\n");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glShadeModel(GL_SMOOTH);
-/*    MatrixState::pushMatrix();
-    MatrixState::translate(0.0, 1.5f, 0.0);
-    _triangle->draw();
-    MatrixState::popMatrix();
-
-    MatrixState::pushMatrix();
-    MatrixState::translate(-3.0f, -1.5f, 0.0);
+/*    _triangle->draw();
     _square->draw();
-    MatrixState::popMatrix();*/
-
-    MatrixState::pushMatrix();
-    //MatrixState::translate(1.5f, 0.0, 0.0);
-    _cubeWithLight->draw();
-    MatrixState::popMatrix();
+    _cubeWithLight->draw();*/
+    _triangleWithTexture->draw();
 }
 
 

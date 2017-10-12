@@ -20,6 +20,6 @@ void BaseShape::draw() {
 
 }
 
-void BaseShape::setMatrix() {
+void BaseShape::setMMatrix() {
 
 }

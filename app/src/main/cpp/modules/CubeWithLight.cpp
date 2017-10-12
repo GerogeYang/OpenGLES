@@ -7,7 +7,7 @@
 #include "CubeWithLight.h"
 #include "../util/Debug.h"
 #include "../util/FileUtil.h"
-#include "../util/RenderUtil.h"
+#include "../util/ShaderUtil.h"
 #include "../matrixstate/MatrixState.h"
 
 
@@ -41,6 +41,21 @@ static GLfloat colors[] = {
         1.0f, 0.0f, 0.5f, 1.0f,
 };
 
+static GLfloat normals[] = {
+        0.0f, -0.417775f, 0.675974f,
+        0.675973f, 0.0f, 0.417775f,
+        0.675973f, -0.0f, -0.417775f,
+        -0.675973f, 0.0f, -0.417775f,
+        -0.675973f, 0.0f, 0.417775f,
+        -0.417775f, 0.675974f, 0.0f,
+        0.417775f, 0.675973f, 0.0f,
+        0.417775f, -0.675974f, 0.0f,
+        -0.417775f, -0.675974f, 0.0f,
+        0.0f, -0.417775f, -0.675973f,
+        0.0f, 0.417775f, -0.675974f,
+        0.0f, 0.417775f, 0.675974f,
+};
+
 static GLushort indexs[] = {
         1, 2, 6,
         1, 7, 2,
@@ -64,31 +79,14 @@ static GLushort indexs[] = {
         4, 8, 0,
 };
 
-
-static GLfloat normals[] = {
-        0.0f, -0.417775f, 0.675974f,
-        0.675973f, 0.0f, 0.417775f,
-        0.675973f, -0.0f, -0.417775f,
-        -0.675973f, 0.0f, -0.417775f,
-        -0.675973f, 0.0f, 0.417775f,
-        -0.417775f, 0.675974f, 0.0f,
-        0.417775f, 0.675973f, 0.0f,
-        0.417775f, -0.675974f, 0.0f,
-        -0.417775f, -0.675974f, 0.0f,
-        0.0f, -0.417775f, -0.675973f,
-        0.0f, 0.417775f, -0.675974f,
-        0.0f, 0.417775f, 0.675974f,
-};
-
-CubeWithLight::CubeWithLight() : vertexShaderCode(NULL), fragmentShaderCode(NULL),
-               program(0), mMMatrixHandle(0), mMVPMatrixHandle(0), mCameraHandle(0),
-               mLightHandle(0), mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
-               mMMatrix(NULL), mMVPMatrix(NULL), mCamera(NULL), mLightLocation(NULL),
-               tx(0.0), ty(0.0), tz(0.0), rot(0.0), sx(1.0), sy(1.0), sz(1.0) {
+CubeWithLight::CubeWithLight() : vertexShaderCode(NULL), fragmentShaderCode(NULL), mMMatrix(NULL), mMVPMatrix(NULL),
+                                 program(0), mMMatrixHandle(0), mMVPMatrixHandle(0), mCameraHandle(0),
+                                 mLightHandle(0), mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
+                                 tx(0.0), ty(0.0), tz(0.0), rot(0.0), sx(1.0), sy(1.0), sz(1.0) {
 }
 
 CubeWithLight::~CubeWithLight() {
-    LOGD("~~~destoryCube()~~~\n");
+    LOGD("~~~destoryCubeWithLight()~~~\n");
     if (NULL != vertexShaderCode) {
         free(vertexShaderCode);
         vertexShaderCode = NULL;
@@ -104,16 +102,16 @@ void CubeWithLight::init() {
     LOGD("~~~init()~~~\n");
     vertexShaderCode = FileUtil::getStrFromAsset("vertextWithLight.glsl");
     fragmentShaderCode = FileUtil::getStrFromAsset("fragmentWithLight.glsl");
-    program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
+    program = ShaderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 
 void CubeWithLight::change() {
     LOGD("~~~change()~~~\n");
-    mCamera = MatrixState::getCameraLocation();
-    mLightLocation = MatrixState::getLightLocation();
+
 }
 
-void CubeWithLight::setMatrix() {
+void CubeWithLight::setMMatrix() {
+    LOGD("~~~setMMatrix()~~~\n");
     MatrixState::rotate(rot, 0.0, 1.0, 0.0);
     if (rot < 360) {
         rot += 5;
@@ -124,24 +122,21 @@ void CubeWithLight::setMatrix() {
 
 void CubeWithLight::draw() {
     LOGD("~~~draw()~~~\n");
-    setMatrix();
+    setMMatrix();
 
     glUseProgram(program);
 
-    mMMatrix = MatrixState::getMixMatrix();
-    mMVPMatrix = MatrixState::getFinalMVPMatrix();
-
     mCameraHandle = (GLuint) glGetUniformLocation(program, "uCamera");
-    glUniform3fv(mCameraHandle, 1, mCamera);
+    glUniform3fv(mCameraHandle, 1, MatrixState::getCameraLocation());
 
     mLightHandle = (GLuint) glGetUniformLocation(program, "uLightDirection");
-    glUniform3fv(mLightHandle, 1, mLightLocation);
+    glUniform3fv(mLightHandle, 1, MatrixState::getLightLocation());
 
     mMMatrixHandle = (GLuint) glGetUniformLocation(program, "uMMatrix");
-    glUniformMatrix4fv(mMMatrixHandle, 1, GL_FALSE, mMMatrix);
+    glUniformMatrix4fv(mMMatrixHandle, 1, GL_FALSE, MatrixState::getMMatrix());
 
     mMVPMatrixHandle = (GLuint) glGetUniformLocation(program, "uMVPMatrix");
-    glUniformMatrix4fv(mMVPMatrixHandle, 1, GL_FALSE, mMVPMatrix);
+    glUniformMatrix4fv(mMVPMatrixHandle, 1, GL_FALSE, MatrixState::getFinalMVPMatrix());
 
     mPositionHandle = (GLuint) glGetAttribLocation(program, "aPosition");
     glEnableVertexAttribArray(mPositionHandle);

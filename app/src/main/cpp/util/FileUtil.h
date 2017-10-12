@@ -15,12 +15,13 @@ private:
 public:
     static void setAAssetManager(AAssetManager *manager);
 
-
     static char* getStrFromAsset(const char *fileName);
 
     static char *getStrFromFile(const char *fileName);
 
     static off_t getFileSize(const char *fileName);
+
+    static char *getPostFix(const char * fileName);
 
 };
 

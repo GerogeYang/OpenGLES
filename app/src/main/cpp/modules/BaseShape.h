@@ -10,7 +10,7 @@
 
 class BaseShape {
 private:
-    virtual void setMatrix();
+    virtual void setMMatrix();
 
 public:
     BaseShape();

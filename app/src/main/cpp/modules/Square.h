@@ -38,13 +38,9 @@ private:
 
     GLfloat *mMVPMatrix;
 
-    GLfloat *mCamera;
-
-    GLfloat *mLightLocation;
-
     float tx,ty,tz,rot,sx,sy,sz;
 
-    void setMatrix();
+    void setMMatrix();
 
 public:
     Square();

@@ -6,7 +6,7 @@
 #include "Square.h"
 #include "../util/Debug.h"
 #include "../util/FileUtil.h"
-#include "../util/RenderUtil.h"
+#include "../util/ShaderUtil.h"
 #include "../matrixstate/MatrixState.h"
 
 static GLfloat vertices[] = {
@@ -28,10 +28,9 @@ static GLushort indexs[] = {
 };
 
 
-Square::Square() : vertexShaderCode(NULL), fragmentShaderCode(NULL),
+Square::Square() : vertexShaderCode(NULL), fragmentShaderCode(NULL), mMMatrix(NULL), mMVPMatrix(NULL),
                    program(0), mMMatrixHandle(0), mMVPMatrixHandle(0), mCameraHandle(0),
                    mLightHandle(0), mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
-                   mMMatrix(NULL), mMVPMatrix(NULL), mCamera(NULL), mLightLocation(NULL),
                    tx(0.0), ty(0.0), tz(0.0), rot(0.0), sx(1.0), sy(1.0), sz(1.0) {
 }
 
@@ -52,16 +51,16 @@ void Square::init() {
     LOGD("~~~init()~~~\n");
     vertexShaderCode = FileUtil::getStrFromAsset("vertext.glsl");
     fragmentShaderCode = FileUtil::getStrFromAsset("fragment.glsl");
-    program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
+    program = ShaderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 
 void Square::change() {
     LOGD("~~~change()~~~\n");
-    mCamera = MatrixState::getCameraLocation();
-    mLightLocation = MatrixState::getLightLocation();
+
 }
 
-void Square::setMatrix() {
+void Square::setMMatrix() {
+    LOGD("~~~setMMatrix()~~~\n");
     MatrixState::rotate(rot, 0.0, 0.0, 1.0);
     if (rot < 360) {
         rot += 5;
@@ -72,14 +71,12 @@ void Square::setMatrix() {
 
 void Square::draw() {
     LOGD("~~~draw()~~~\n");
-    setMatrix();
+    setMMatrix();
 
     glUseProgram(program);
 
-    mMVPMatrix = MatrixState::getFinalMVPMatrix();
-
     mMVPMatrixHandle = (GLuint) glGetUniformLocation(program, "uMVPMatrix");
-    glUniformMatrix4fv(mMVPMatrixHandle, 1, GL_FALSE, mMVPMatrix);
+    glUniformMatrix4fv(mMVPMatrixHandle, 1, GL_FALSE, MatrixState::getFinalMVPMatrix());
 
     mPositionHandle = (GLuint) glGetAttribLocation(program, "aPosition");
     glEnableVertexAttribArray(mPositionHandle);
