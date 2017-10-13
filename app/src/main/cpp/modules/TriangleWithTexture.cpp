@@ -6,9 +6,8 @@
 #include "TriangleWithTexture.h"
 #include "../util/Debug.h"
 #include "../util/FileUtil.h"
-#include "../util/ShaderUtil.h"
+#include "../util/RenderUtil.h"
 #include "../matrixstate/MatrixState.h"
-#include "../util/TextureUtil.h"
 
 static GLfloat vertices[] = {
         1.0f, 1.0f, 0.0f,// top right
@@ -59,26 +58,21 @@ TriangleWithTexture::~TriangleWithTexture() {
 
 void TriangleWithTexture::initShader() {
     LOGD("~~~initShader()~~~\n");
-    vertexShaderCode = FileUtil::getStrFromAsset("vertext.glsl");
-    fragmentShaderCode = FileUtil::getStrFromAsset("fragment.glsl");
-    program = ShaderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
+    vertexShaderCode = FileUtil::getStrFromAsset("vertextWithTexture.glsl");
+    fragmentShaderCode = FileUtil::getStrFromAsset("fragmentWithTexture.glsl");
+    program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 
 void TriangleWithTexture::initTextures() {
     LOGD("~~~initTextures()~~~\n");
-    textureId = TextureUtil::loadTextures("1.png");
+    textureId = RenderUtil::createTexture("1.png");
 }
 
 void TriangleWithTexture::initHandle() {
     LOGD("~~~initHandle()~~~\n");
-    glUseProgram(program);
-    mCameraHandle = (GLuint) glGetUniformLocation(program, "uCamera");
-    mLightHandle = (GLuint) glGetUniformLocation(program, "uLightDirection");
-    mMMatrixHandle = (GLuint) glGetUniformLocation(program, "uMMatrix");
     mMVPMatrixHandle = (GLuint) glGetUniformLocation(program, "uMVPMatrix");
     mPositionHandle = (GLuint) glGetAttribLocation(program, "aPosition");
-    mNormalHandle = (GLuint) glGetAttribLocation(program, "aNormal");
-    mColorHandle = (GLuint) glGetAttribLocation(program, "aColor");
+    mTextCoordHandle = (GLuint) glGetAttribLocation(program, "aTexCoord");
 }
 
 void TriangleWithTexture::init() {
@@ -101,32 +95,23 @@ void TriangleWithTexture::draw() {
     setMMatrix();
 
     glUseProgram(program);
-    glUniform3fv(mCameraHandle, 1, MatrixState::getCameraLocation());
-    glUniform3fv(mLightHandle, 1, MatrixState::getLightLocation());
-    glUniformMatrix4fv(mMMatrixHandle, 1, GL_FALSE, MatrixState::getMMatrix());
+
     glUniformMatrix4fv(mMVPMatrixHandle, 1, GL_FALSE, MatrixState::getFinalMVPMatrix());
 
     glEnableVertexAttribArray(mPositionHandle);
     glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GL_FLOAT, GL_FALSE,
                           COORDS_PER_VERTEX * sizeof(GLfloat), vertices);
 
-    glEnableVertexAttribArray(mNormalHandle);
-    glVertexAttribPointer(mNormalHandle, COORDS_PER_VERTEX, GL_FLOAT, GL_FALSE,
-                          COORDS_PER_VERTEX * sizeof(GLfloat), normals);
-
-    glEnableVertexAttribArray(mColorHandle);
-    glVertexAttribPointer(mColorHandle, COORDS_PER_COLORS, GL_FLOAT, GL_FALSE,
-                          COORDS_PER_COLORS * sizeof(GLfloat), colors);
-
     glEnableVertexAttribArray(mTextCoordHandle);
     glVertexAttribPointer(mTextCoordHandle, COORDS_PER_TTEXTURES, GL_FLOAT, GL_FALSE,
                           COORDS_PER_TTEXTURES * sizeof(GLfloat), textCoords);
 
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D,textureId);
+
     glDrawElements(GL_TRIANGLES, sizeof(indexs) / sizeof(GLushort), GL_UNSIGNED_SHORT, indexs);
 
     glDisableVertexAttribArray(mPositionHandle);
-    glDisableVertexAttribArray(mNormalHandle);
-    glDisableVertexAttribArray(mColorHandle);
     glDisableVertexAttribArray(mTextCoordHandle);
 }
 

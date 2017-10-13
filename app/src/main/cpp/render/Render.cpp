@@ -77,7 +77,7 @@ void Render::changeEs(int width, int height) {
     float ratio = (float) width / height;
     MatrixState::setProjectFrustum(-ratio, ratio, -1, 1, 3, 500);
     MatrixState::setCamera(5.0f, 5.0f, 10.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-    /*_triangle->change();
+/*    _triangle->change();
     _square->change();
     _cubeWithLight->change();*/
     _triangleWithTexture->change();
@@ -89,7 +89,9 @@ void Render::drawEs() {
 /*    _triangle->draw();
     _square->draw();
     _cubeWithLight->draw();*/
+    MatrixState::pushMatrix();
     _triangleWithTexture->draw();
+    MatrixState::popMatrix();
 }
 
 

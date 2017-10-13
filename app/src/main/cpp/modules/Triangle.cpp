@@ -6,7 +6,7 @@
 #include "Triangle.h"
 #include "../util/Debug.h"
 #include "../util/FileUtil.h"
-#include "../util/ShaderUtil.h"
+#include "../util/RenderUtil.h"
 #include "../matrixstate/MatrixState.h"
 
 
@@ -50,7 +50,7 @@ void Triangle::init() {
     LOGD("~~~init()~~~\n");
     vertexShaderCode = FileUtil::getStrFromAsset("vertext.glsl");
     fragmentShaderCode = FileUtil::getStrFromAsset("fragment.glsl");
-    program = ShaderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
+    program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 
 void Triangle::change() {

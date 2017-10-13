@@ -7,7 +7,7 @@
 #include "CubeWithLight.h"
 #include "../util/Debug.h"
 #include "../util/FileUtil.h"
-#include "../util/ShaderUtil.h"
+#include "../util/RenderUtil.h"
 #include "../matrixstate/MatrixState.h"
 
 
@@ -102,7 +102,7 @@ void CubeWithLight::init() {
     LOGD("~~~init()~~~\n");
     vertexShaderCode = FileUtil::getStrFromAsset("vertextWithLight.glsl");
     fragmentShaderCode = FileUtil::getStrFromAsset("fragmentWithLight.glsl");
-    program = ShaderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
+    program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 
 void CubeWithLight::change() {

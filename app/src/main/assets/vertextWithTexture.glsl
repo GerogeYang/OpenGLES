@@ -1,4 +1,3 @@
-#version 200 es
 uniform mat4 uMVPMatrix;
 attribute vec4 aPosition;
 attribute vec2 aTexCoord;

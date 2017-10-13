@@ -4,7 +4,6 @@
 
 #include <stdio.h>
 #include <malloc.h>
-#include <string.h>
 #include "FileUtil.h"
 #include "Debug.h"
 
@@ -13,30 +12,91 @@ extern "C" {
 #endif
 
 AAssetManager *FileUtil::mgr = NULL;
+gl_texture_t *FileUtil::texinfo = NULL;
 
 void FileUtil::setAAssetManager(AAssetManager *manager) {
     LOGD("~~~setAAssetManager()~~~\n");
     mgr = manager;
 }
 
-
-char* FileUtil::getStrFromAsset(const char *fileName) {
+char *FileUtil::getStrFromAsset(const char *fileName) {
     LOGD("~~~getAssetStr()~~~\n");
-    LOGI("~~~fileName = %s~~~\n",fileName);
+    LOGI("~~~fileName = %s~~~\n", fileName);
     if (NULL == mgr) {
         return NULL;
     }
     AAsset *asset = AAssetManager_open(mgr, fileName, AASSET_MODE_UNKNOWN);
     off_t bufferSize = AAsset_getLength(asset);
-    char* data = (char*) malloc(sizeof(char)*(bufferSize + 1));
+    char *data = (char *) malloc(sizeof(char) * (bufferSize + 1));
     data[bufferSize] = '\0';
-    int size = AAsset_read(asset, (void*)data, (size_t)bufferSize);
+    int size = AAsset_read(asset, (void *) data, (size_t) bufferSize);
     return data;
 }
 
+gl_texture_t *FileUtil::getOtherImangeFromAsset(const char *imageFileName) {
+    LOGD("~~~getOtherImangeFromAsset()~~~\n");
+    texinfo = (gl_texture_t *) malloc(sizeof(gl_texture_t));
+    AAsset *asset = AAssetManager_open(mgr, imageFileName, AASSET_MODE_UNKNOWN);
+    off_t start, length;
+    int fd = AAsset_openFileDescriptor(asset, &start, &length);
+    if (fd < 0) {
+        LOGE("error: couldn't open \"%s\"!\n", imageFileName);
+        return NULL;
+    }
+
+    FILE *fp = NULL;
+    unsigned char *texels = NULL;
+    unsigned long len = 0;
+    unsigned long width = 0;
+    unsigned long height = 0;
+    fp = fdopen(fd, "rb");
+    if (!fp) {
+        LOGE("error: couldn't open \"%s\"!\n", imageFileName);
+        return NULL;
+    }
+
+    fseek(fp, 18, SEEK_SET);
+    fread(&width, 4, 1, fp);
+    fread(&height, 4, 1, fp);
+    fseek(fp, 0, SEEK_END);
+    len = (unsigned long) (ftell(fp) - 54);
+    texels = (unsigned char *) malloc(len);
+    fseek(fp, 54, SEEK_SET);
+    fread(texels, len, 1, fp);
+
+    texinfo->width = (GLsizei) width;
+    texinfo->height = (GLsizei) height;
+    texinfo->internalFormat = 3;
+    texinfo->format = GL_RGB;
+    texinfo->texels = texels;
+
+    fclose(fp);
+    AAsset_close(asset);
+    return texinfo;
+}
+
+char *FileUtil::getStrFromFile(const char *fileName) {
+    LOGD("~~~getStrFromeFile()~~~\n");
+    LOGI("~~~fileName = %s~~~\n", fileName);
+    if (NULL == mgr) {
+        return NULL;
+    }
+    FILE *pFile = fopen(fileName, "r");
+    char *pBuf;
+    fseek(pFile, 0, SEEK_END);
+    long len = ftell(pFile);
+    pBuf = (char *) malloc(sizeof(char) * (len + 1));;
+    rewind(pFile);
+    fread(pBuf, 1, (size_t) len, pFile);
+    pBuf[len] = 0;
+    fclose(pFile);
+    return pBuf;
+}
+
+
 off_t FileUtil::getFileSize(const char *fileName) {
     LOGD("~~~getFileSize()~~~\n");
-    LOGI("~~~fileName = %s~~~\n",fileName);
+    LOGI("~~~fileName = %s~~~\n", fileName);
     if (NULL == mgr) {
         return 0;
     }
@@ -51,32 +111,6 @@ off_t FileUtil::getFileSize(const char *fileName) {
     return size;
 }
 
-char* FileUtil::getStrFromFile(const char *fileName) {
-    LOGD("~~~getStrFromeFile()~~~\n");
-    LOGI("~~~fileName = %s~~~\n",fileName);
-    if (NULL == mgr) {
-        return NULL;
-    }
-    FILE *pFile = fopen(fileName, "r");
-    char *pBuf;
-    fseek(pFile, 0, SEEK_END);
-    long len = ftell(pFile);
-    pBuf = (char*) malloc(sizeof(char)*(len + 1));;
-    rewind(pFile);
-    fread(pBuf, 1, (size_t)len, pFile);
-    pBuf[len] = 0;
-    fclose(pFile);
-    return pBuf;
-}
-
-char* FileUtil::getPostFix(const char *fileName) {
-    char *ext=strrchr(fileName,'.');
-    if (ext) {
-        *ext='\0';
-        ext++;
-    }
-    return ext;
-}
 
 #ifdef __cplusplus
 }
