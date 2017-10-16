@@ -37,6 +37,8 @@ static GLushort indexs[] = {
         0, 1, 2  //逆时针绘图
 };
 
+static int STEP = 5;
+
 TriangleWithTexture::TriangleWithTexture() : vertexShaderCode(NULL), fragmentShaderCode(NULL),
                                              mMMatrix(NULL), mMVPMatrix(NULL),
                                              program(0), textureId(0), mMMatrixHandle(0),
@@ -92,16 +94,13 @@ void TriangleWithTexture::init() {
 
 void TriangleWithTexture::change() {
     LOGD("~~~change()~~~\n");
+
 }
 
 void TriangleWithTexture::setMMatrix() {
     LOGD("~~~setMMatrix()~~~\n");
     MatrixState::rotate(rot, 0.0, 1.0, 0.0);
-    if (rot < 360) {
-        rot += 5;
-    } else {
-        rot = 0;
-    }
+    rot = ((int) rot + STEP) % 360;
 }
 
 void TriangleWithTexture::draw() {

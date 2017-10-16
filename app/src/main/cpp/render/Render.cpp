@@ -12,7 +12,8 @@ extern "C" {
 #endif
 
 
-Render::Render() : _triangle(NULL), _square(NULL), _cubeWithLight(NULL), _triangleWithTexture(NULL) {
+Render::Render() : _triangle(NULL), _square(NULL), _cubeWithLight(NULL),
+                   _triangleWithTexture(NULL) {
 /*    _triangle = new Triangle();
     _square = new Square();
     _cubeWithLight = new CubeWithLight();*/

@@ -5,7 +5,6 @@
 #include <vector>
 #include "RenderUtil.h"
 #include "Debug.h"
-#include "FileUtil.h"
 #include "../lodepng/lodepng.h"
 
 GLuint RenderUtil::program = 0;
@@ -115,7 +114,8 @@ bool RenderUtil::loadPNGImage(const char *fileName) {
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             checkGLError("glTexParameterf");
-            glTexImage2D(GL_TEXTURE_2D, 0, internalformat, width, height, 0, format, GL_UNSIGNED_BYTE, &image[0]);
+            glTexImage2D(GL_TEXTURE_2D, 0, internalformat, width, height, 0, format,
+                         GL_UNSIGNED_BYTE, &image[0]);
             checkGLError("glTexImage2D");
             return true;
         }
