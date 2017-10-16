@@ -99,7 +99,7 @@ void TriangleWithTexture::change() {
 
 void TriangleWithTexture::setMMatrix() {
     LOGD("~~~setMMatrix()~~~\n");
-    MatrixState::rotate(rot, 0.0, 1.0, 0.0);
+    MatrixState::rotate(rot, 1.0, 0.0, 0.0);
     rot = ((int) rot + STEP) % 360;
 }
 

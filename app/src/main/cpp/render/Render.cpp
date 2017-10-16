@@ -15,8 +15,8 @@ extern "C" {
 Render::Render() : _triangle(NULL), _square(NULL), _cubeWithLight(NULL),
                    _triangleWithTexture(NULL) {
 /*    _triangle = new Triangle();
-    _square = new Square();
-    _cubeWithLight = new CubeWithLight();*/
+    _square = new Square();*/
+    _cubeWithLight = new CubeWithLight();
     _triangleWithTexture = new TriangleWithTexture();
 }
 
@@ -60,8 +60,8 @@ void Render::init() {
     MatrixState::init();
     MatrixState::setLightLocation(30.0f, 50.0f, 500.0f);
 /*    _triangle->init();
-    _square->init();
-    _cubeWithLight->init();*/
+    _square->init();*/
+    _cubeWithLight->init();
     _triangleWithTexture->init();
 }
 
@@ -79,8 +79,8 @@ void Render::changeEs(int width, int height) {
     MatrixState::setProjectFrustum(-ratio, ratio, -1, 1, 3, 500);
     MatrixState::setCamera(5.0f, 5.0f, 10.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 /*    _triangle->change();
-    _square->change();
-    _cubeWithLight->change();*/
+    _square->change();*/
+    _cubeWithLight->change();
     _triangleWithTexture->change();
 }
 
@@ -88,9 +88,13 @@ void Render::drawEs() {
     LOGD("~~~drawEs()~~~\n");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 /*    _triangle->draw();
-    _square->draw();
-    _cubeWithLight->draw();*/
+    _square->draw();*/
     MatrixState::pushMatrix();
+    MatrixState::translate(-1.5f, 0.0, 0.0);
+    _cubeWithLight->draw();
+    MatrixState::popMatrix();
+    MatrixState::pushMatrix();
+    MatrixState::translate(1.5f, 0.0, 0.0);
     _triangleWithTexture->draw();
     MatrixState::popMatrix();
 }

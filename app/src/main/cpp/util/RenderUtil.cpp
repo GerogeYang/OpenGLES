@@ -89,36 +89,32 @@ GLuint RenderUtil::createProgram(const char *vertexCode, const char *fragmentCod
 
 bool RenderUtil::loadPNGImage(const char *fileName) {
     LOGD("~~~loadPNGImage()~~~\n");
-    std::vector<unsigned char> png;
     std::vector<unsigned char> image;
     unsigned width, height;
     unsigned internalformat, format;
-    lodepng::State state;
 
-    unsigned error = lodepng::load_file(png, fileName);
+    unsigned error = lodepng::decode(image, width, height, fileName);
 
-    if (!error) {
-        error = lodepng::decode(image, width, height, state, png);
-        if (error) {
-            LOGE("~~~decode PNG Image failed, error code: %d\n~~~", error);
-            return false;
-        }
-        internalformat = GL_RGBA;
-        format = GL_RGBA;
-        if (0 != textureId) {
-            glBindTexture(GL_TEXTURE_2D, textureId);
-            checkGLError("glBindTexture");
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            checkGLError("glTexParameterf");
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            checkGLError("glTexParameterf");
-            glTexImage2D(GL_TEXTURE_2D, 0, internalformat, width, height, 0, format,
-                         GL_UNSIGNED_BYTE, &image[0]);
-            checkGLError("glTexImage2D");
-            return true;
-        }
+    if (error) {
+        LOGE("~~~decode PNG Image failed, error code: %d\n~~~", error);
+        return false;
+    }
+
+    internalformat = GL_RGBA;
+    format = GL_RGBA;
+    if (0 != textureId) {
+        glBindTexture(GL_TEXTURE_2D, textureId);
+        checkGLError("glBindTexture");
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        checkGLError("glTexParameterf");
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        checkGLError("glTexParameterf");
+        glTexImage2D(GL_TEXTURE_2D, 0, internalformat, width, height, 0, format,
+                     GL_UNSIGNED_BYTE, &image[0]);
+        checkGLError("glTexImage2D");
+        return true;
     }
     return false;
 }
@@ -134,7 +130,7 @@ GLuint RenderUtil::createTexture(const char *fileName) {
     reslut = loadPNGImage(fileName);
 
     if (!reslut) {
-        LOGE("~~~loadPNGImage failed~~~\n");
+        LOGE("~~~load PNG Image failed~~~\n");
         return 0;
     }
 

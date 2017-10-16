@@ -79,6 +79,8 @@ static GLushort indexs[] = {
         4, 8, 0,
 };
 
+static int STEP = 5;
+
 CubeWithLight::CubeWithLight() : vertexShaderCode(NULL), fragmentShaderCode(NULL), mMMatrix(NULL), mMVPMatrix(NULL),
                                  program(0), mMMatrixHandle(0), mMVPMatrixHandle(0), mCameraHandle(0),
                                  mLightHandle(0), mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
@@ -113,11 +115,7 @@ void CubeWithLight::change() {
 void CubeWithLight::setMMatrix() {
     LOGD("~~~setMMatrix()~~~\n");
     MatrixState::rotate(rot, 0.0, 1.0, 0.0);
-    if (rot < 360) {
-        rot += 5;
-    } else {
-        rot = 0;
-    }
+    rot = ((int) rot + STEP) % 360;
 }
 
 void CubeWithLight::draw() {
