@@ -13,6 +13,7 @@ aux_source_directory(src/main/cpp/element ELEMENT)
 aux_source_directory(src/main/cpp/matrix MATRIX)
 aux_source_directory(src/main/cpp/matrixstate MATRIXSTATE)
 aux_source_directory(src/main/cpp/modules MODULES)
+aux_source_directory(src/main/cpp/lodepng LODEPNG)
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -33,6 +34,7 @@ add_library( # Sets the name of the library.
              ${MATRIX}
              ${MATRIXSTATE}
              ${MODULES}
+             ${LODEPNG}
              )
 
 # Searches for a specified prebuilt library and stores the path as a

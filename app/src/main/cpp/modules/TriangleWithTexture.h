@@ -16,7 +16,7 @@ private:
 
     static const int COORDS_PER_COLORS = 4;
 
-    static const int COORDS_PER_TTEXTURES = 2;
+    static const int COORDS_PER_TEXTURES = 2;
 
     char *vertexShaderCode;
 
@@ -40,7 +40,7 @@ private:
 
     GLuint mColorHandle;
 
-    GLuint mTextCoordHandle;
+    GLuint mTextureCoordHandle;
 
     GLfloat *mMMatrix;
 

@@ -37,10 +37,14 @@ static GLushort indexs[] = {
         0, 1, 2  //逆时针绘图
 };
 
-TriangleWithTexture::TriangleWithTexture() : vertexShaderCode(NULL), fragmentShaderCode(NULL), mMMatrix(NULL), mMVPMatrix(NULL),
-                                             program(0),textureId(0), mMMatrixHandle(0), mMVPMatrixHandle(0), mCameraHandle(0), mLightHandle(0),
-                                             mPositionHandle(0), mNormalHandle(0), mColorHandle(0), mTextCoordHandle(0),
-                                             tx(0.0), ty(0.0), tz(0.0), rot(0.0), sx(1.0), sy(1.0), sz(1.0) {
+TriangleWithTexture::TriangleWithTexture() : vertexShaderCode(NULL), fragmentShaderCode(NULL),
+                                             mMMatrix(NULL), mMVPMatrix(NULL),
+                                             program(0), textureId(0), mMMatrixHandle(0),
+                                             mMVPMatrixHandle(0), mCameraHandle(0), mLightHandle(0),
+                                             mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
+                                             mTextureCoordHandle(0),
+                                             tx(0.0), ty(0.0), tz(0.0), rot(0.0), sx(1.0), sy(1.0),
+                                             sz(1.0) {
 }
 
 TriangleWithTexture::~TriangleWithTexture() {
@@ -65,14 +69,18 @@ void TriangleWithTexture::initShader() {
 
 void TriangleWithTexture::initTextures() {
     LOGD("~~~initTextures()~~~\n");
-    textureId = RenderUtil::createTexture("1.png");
+    textureId = RenderUtil::createTexture("star.png");
 }
 
 void TriangleWithTexture::initHandle() {
     LOGD("~~~initHandle()~~~\n");
+    mCameraHandle = (GLuint) glGetUniformLocation(program, "uCamera");
+    mLightHandle = (GLuint) glGetUniformLocation(program, "uLightDirection");
+    mMMatrixHandle = (GLuint) glGetUniformLocation(program, "uMMatrix");
     mMVPMatrixHandle = (GLuint) glGetUniformLocation(program, "uMVPMatrix");
     mPositionHandle = (GLuint) glGetAttribLocation(program, "aPosition");
-    mTextCoordHandle = (GLuint) glGetAttribLocation(program, "aTexCoord");
+    mNormalHandle = (GLuint) glGetAttribLocation(program, "aNormal");
+    mTextureCoordHandle = (GLuint) glGetAttribLocation(program, "aTextureCoord");
 }
 
 void TriangleWithTexture::init() {
@@ -88,6 +96,12 @@ void TriangleWithTexture::change() {
 
 void TriangleWithTexture::setMMatrix() {
     LOGD("~~~setMMatrix()~~~\n");
+    MatrixState::rotate(rot, 0.0, 1.0, 0.0);
+    if (rot < 360) {
+        rot += 5;
+    } else {
+        rot = 0;
+    }
 }
 
 void TriangleWithTexture::draw() {
@@ -95,23 +109,30 @@ void TriangleWithTexture::draw() {
     setMMatrix();
 
     glUseProgram(program);
-
+    glUniform3fv(mCameraHandle, 1, MatrixState::getCameraLocation());
+    glUniform3fv(mLightHandle, 1, MatrixState::getLightLocation());
+    glUniformMatrix4fv(mMMatrixHandle, 1, GL_FALSE, MatrixState::getMMatrix());
     glUniformMatrix4fv(mMVPMatrixHandle, 1, GL_FALSE, MatrixState::getFinalMVPMatrix());
 
     glEnableVertexAttribArray(mPositionHandle);
     glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GL_FLOAT, GL_FALSE,
                           COORDS_PER_VERTEX * sizeof(GLfloat), vertices);
 
-    glEnableVertexAttribArray(mTextCoordHandle);
-    glVertexAttribPointer(mTextCoordHandle, COORDS_PER_TTEXTURES, GL_FLOAT, GL_FALSE,
-                          COORDS_PER_TTEXTURES * sizeof(GLfloat), textCoords);
+    glEnableVertexAttribArray(mNormalHandle);
+    glVertexAttribPointer(mNormalHandle, COORDS_PER_VERTEX, GL_FLOAT, GL_FALSE,
+                          COORDS_PER_VERTEX * sizeof(GLfloat), normals);
+
+    glEnableVertexAttribArray(mTextureCoordHandle);
+    glVertexAttribPointer(mTextureCoordHandle, COORDS_PER_TEXTURES, GL_FLOAT, GL_FALSE,
+                          COORDS_PER_TEXTURES * sizeof(GLfloat), textCoords);
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D,textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
 
     glDrawElements(GL_TRIANGLES, sizeof(indexs) / sizeof(GLushort), GL_UNSIGNED_SHORT, indexs);
 
     glDisableVertexAttribArray(mPositionHandle);
-    glDisableVertexAttribArray(mTextCoordHandle);
+    glDisableVertexAttribArray(mNormalHandle);
+    glDisableVertexAttribArray(mTextureCoordHandle);
 }
 

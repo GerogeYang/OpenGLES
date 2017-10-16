@@ -18,6 +18,8 @@ private:
 
     static GLuint loadShader(GLenum type, const char *shaderCode);
 
+    static bool loadPNGImage(const char *fileName);
+
 public:
     static GLuint createProgram(const char *vertexCode, const char *fragmentCode);
 
