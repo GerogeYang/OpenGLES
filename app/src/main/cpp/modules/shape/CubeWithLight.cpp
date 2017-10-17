@@ -4,11 +4,11 @@
 
 #include <malloc.h>
 #include <GLES/gl.h>
-#include "CubeWithLight.h"
-#include "../util/Debug.h"
-#include "../util/FileUtil.h"
-#include "../util/RenderUtil.h"
-#include "../matrixstate/MatrixState.h"
+#include <CubeWithLight.h>
+#include "../../util/Debug.h"
+#include "../../util/FileUtil.h"
+#include "../../util/RenderUtil.h"
+#include "../../matrixstate/MatrixState.h"
 
 
 static GLfloat vertices[] = {
@@ -102,8 +102,8 @@ CubeWithLight::~CubeWithLight() {
 
 void CubeWithLight::init() {
     LOGD("~~~init()~~~\n");
-    vertexShaderCode = FileUtil::getStrFromAsset("vertextWithLight.glsl");
-    fragmentShaderCode = FileUtil::getStrFromAsset("fragmentWithLight.glsl");
+    vertexShaderCode = FileUtil::getStrFromAsset("shader/vertextWithLight.glsl");
+    fragmentShaderCode = FileUtil::getStrFromAsset("shader/fragmentWithLight.glsl");
     program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 

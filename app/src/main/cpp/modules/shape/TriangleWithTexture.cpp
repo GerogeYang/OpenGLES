@@ -3,11 +3,11 @@
 //
 
 #include <malloc.h>
-#include "TriangleWithTexture.h"
-#include "../util/Debug.h"
-#include "../util/FileUtil.h"
-#include "../util/RenderUtil.h"
-#include "../matrixstate/MatrixState.h"
+#include <TriangleWithTexture.h>
+#include "../../util/Debug.h"
+#include "../../util/FileUtil.h"
+#include "../../util/RenderUtil.h"
+#include "../../matrixstate/MatrixState.h"
 
 static GLfloat vertices[] = {
         1.0f, 1.0f, 0.0f,// top right
@@ -64,14 +64,14 @@ TriangleWithTexture::~TriangleWithTexture() {
 
 void TriangleWithTexture::initShader() {
     LOGD("~~~initShader()~~~\n");
-    vertexShaderCode = FileUtil::getStrFromAsset("vertextWithTexture.glsl");
-    fragmentShaderCode = FileUtil::getStrFromAsset("fragmentWithTexture.glsl");
+    vertexShaderCode = FileUtil::getStrFromAsset("shader/vertextWithTexture.glsl");
+    fragmentShaderCode = FileUtil::getStrFromAsset("shader/fragmentWithTexture.glsl");
     program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 
 void TriangleWithTexture::initTextures() {
     LOGD("~~~initTextures()~~~\n");
-    textureId = RenderUtil::createTexture("star.png");
+    textureId = RenderUtil::createTexture("texture/star.png");
 }
 
 void TriangleWithTexture::initHandle() {

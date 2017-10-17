@@ -7,13 +7,17 @@ cmake_minimum_required(VERSION 3.4.1)
 
 # Set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/jniLibs/${Android_ABI})
 
+include_directories(src/main/cpp/modules/include)
+
 aux_source_directory(src/main/cpp/render RENDER)
 aux_source_directory(src/main/cpp/util UTIL)
 aux_source_directory(src/main/cpp/element ELEMENT)
 aux_source_directory(src/main/cpp/matrix MATRIX)
 aux_source_directory(src/main/cpp/matrixstate MATRIXSTATE)
-aux_source_directory(src/main/cpp/modules MODULES)
 aux_source_directory(src/main/cpp/lodepng LODEPNG)
+aux_source_directory(src/main/cpp/modules/shape MODULES_SHAPE)
+aux_source_directory(src/main/cpp/modules/model MODULES_MODEL)
+
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -33,8 +37,9 @@ add_library( # Sets the name of the library.
              ${ELEMENT}
              ${MATRIX}
              ${MATRIXSTATE}
-             ${MODULES}
              ${LODEPNG}
+             ${MODULES_SHAPE}
+             ${MODULES_MODEL}
              )
 
 # Searches for a specified prebuilt library and stores the path as a
