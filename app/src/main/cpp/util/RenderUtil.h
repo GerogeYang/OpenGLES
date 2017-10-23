@@ -18,6 +18,8 @@ private:
 
     static GLuint loadShader(GLenum type, const char *shaderCode);
 
+    static bool parseImage(const char *fileName, int &width, int &height, unsigned char *image);
+
     static bool loadPNGImage(const char *fileName);
 
 public:

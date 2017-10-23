@@ -64,8 +64,8 @@ TriangleWithTexture::~TriangleWithTexture() {
 
 void TriangleWithTexture::initShader() {
     LOGD("~~~initShader()~~~\n");
-    vertexShaderCode = FileUtil::getStrFromAsset("shader/vertextWithTexture.glsl");
-    fragmentShaderCode = FileUtil::getStrFromAsset("shader/fragmentWithTexture.glsl");
+    vertexShaderCode = FileUtil::read("shader/vertextWithTexture.glsl");
+    fragmentShaderCode = FileUtil::read("shader/fragmentWithTexture.glsl");
     program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 

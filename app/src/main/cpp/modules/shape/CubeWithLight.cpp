@@ -102,8 +102,8 @@ CubeWithLight::~CubeWithLight() {
 
 void CubeWithLight::init() {
     LOGD("~~~init()~~~\n");
-    vertexShaderCode = FileUtil::getStrFromAsset("shader/vertextWithLight.glsl");
-    fragmentShaderCode = FileUtil::getStrFromAsset("shader/fragmentWithLight.glsl");
+    vertexShaderCode = FileUtil::read("shader/vertextWithLight.glsl");
+    fragmentShaderCode = FileUtil::read("shader/fragmentWithLight.glsl");
     program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 

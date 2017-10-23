@@ -2,10 +2,10 @@
 // Created by 70889 on 2017/9/27.
 //
 #include <stdlib.h>
-#include <vector>
 #include "RenderUtil.h"
 #include "Debug.h"
 #include "../lodepng/lodepng.h"
+
 
 GLuint RenderUtil::program = 0;
 GLuint RenderUtil::textureId = 0;
@@ -119,6 +119,20 @@ bool RenderUtil::loadPNGImage(const char *fileName) {
     return false;
 }
 
+/*bool RenderUtil::parseImage(const char *fileName, int &width, int &height, unsigned char *image) {
+    AAsset *asset = FileUtil::openFromAsset(fileName);
+    int fd = FileUtil::getFdFromAsset(asset);
+    image = SOIL_load_image_from_fd(fd, &width, &height, 0, SOIL_LOAD_RGBA);
+    LOGI("~~~YJ: width = %d, height = %d~~~",width, height);
+    FileUtil::closeFromAsset(asset);
+    if (NULL == image) {
+        LOGE("~~~YJ: image = %s failed ~~~\n",image);
+        return false;
+    }
+    LOGD("~~~YJ: image = %s~~~\n",image);
+    return true;
+}*/
+
 GLuint RenderUtil::createTexture(const char *fileName) {
     LOGD("~~~createTexture()~~~\n");
     bool reslut;
@@ -129,10 +143,31 @@ GLuint RenderUtil::createTexture(const char *fileName) {
 
     reslut = loadPNGImage(fileName);
 
-    if (!reslut) {
-        LOGE("~~~load PNG Image failed~~~\n");
+    if(!reslut || (0 == textureId)){
         return 0;
     }
+
+/*
+    unsigned char *image = NULL;
+    int width, height;
+    reslut = parseImage(fileName, width, height, image);
+
+    if(!reslut || (0 == textureId)){
+        return 0;
+    }
+
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    checkGLError("glBindTexture");
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    checkGLError("glTexParameterf");
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    checkGLError("glTexParameterf");
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+    checkGLError("glTexImage2D");
+    SOIL_free_image_data(image);
+*/
 
     return textureId;
 }

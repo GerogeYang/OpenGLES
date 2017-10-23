@@ -15,7 +15,15 @@ private:
 public:
     static void setAAssetManager(AAssetManager *manager);
 
-    static char *getStrFromAsset(const char *fileName);
+    static char *read(const char *fileName);
+
+    static AAsset *openFromAsset(const char *fileName);
+
+    static char *readFromAsset(AAsset *asset);
+
+    static int getFdFromAsset(AAsset *asset);
+
+    static void closeFromAsset(AAsset *asset);
 
     static int getBufferFromAsset(void *buffer, const char *fileName);
 

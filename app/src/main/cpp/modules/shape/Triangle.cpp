@@ -48,8 +48,8 @@ Triangle::~Triangle() {
 
 void Triangle::init() {
     LOGD("~~~init()~~~\n");
-    vertexShaderCode = FileUtil::getStrFromAsset("shader/vertext.glsl");
-    fragmentShaderCode = FileUtil::getStrFromAsset("shader/fragment.glsl");
+    vertexShaderCode = FileUtil::read("shader/vertext.glsl");
+    fragmentShaderCode = FileUtil::read("shader/fragment.glsl");
     program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
 }
 

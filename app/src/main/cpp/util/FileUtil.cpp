@@ -13,23 +13,58 @@ extern "C" {
 
 AAssetManager *FileUtil::mgr = NULL;
 
+
 void FileUtil::setAAssetManager(AAssetManager *manager) {
     LOGD("~~~setAAssetManager()~~~\n");
     mgr = manager;
 }
 
-char *FileUtil::getStrFromAsset(const char *fileName) {
-    LOGD("~~~getStrFromAsset()~~~\n");
+char *FileUtil::read(const char *fileName) {
+    LOGD("~~~read()~~~\n");
     LOGI("~~~fileName = %s~~~\n", fileName);
     if (NULL == mgr) {
         return NULL;
     }
+    AAsset *asset = openFromAsset(fileName);
+    char *data = readFromAsset(asset);
+    closeFromAsset(asset);
+    return data;
+}
+
+AAsset *FileUtil::openFromAsset(const char *fileName) {
+    LOGD("~~~openFromAsset()~~~\n");
+    LOGI("~~~fileName = %s~~~\n", fileName);
     AAsset *asset = AAssetManager_open(mgr, fileName, AASSET_MODE_UNKNOWN);
+    return asset;
+}
+
+char *FileUtil::readFromAsset(AAsset *asset) {
+    LOGD("~~~readFromAsset()~~~\n");
+    if (NULL == asset) {
+        LOGE("~~~open asset file failed!~~~\n");
+        return NULL;
+    }
     off_t bufferSize = AAsset_getLength(asset);
     char *data = (char *) malloc(sizeof(char) * (bufferSize + 1));
     data[bufferSize] = '\0';
     int size = AAsset_read(asset, (void *) data, (size_t) bufferSize);
     return data;
+}
+
+int FileUtil::getFdFromAsset(AAsset *asset) {
+    LOGD("~~~getFdFromAsset()~~~\n");
+    off_t start, length;
+    int fd = AAsset_openFileDescriptor(asset, &start, &length);
+    if (fd < 0) {
+        LOGE("~~~get fd from asset failed!~~~\n");
+        return -1;
+    }
+    return fd;
+}
+
+void FileUtil::closeFromAsset(AAsset *asset) {
+    LOGD("~~~closeFromAsset()~~~\n");
+    AAsset_close(asset);
 }
 
 int FileUtil::getBufferFromAsset(void *buffer, const char *fileName) {
@@ -43,6 +78,7 @@ int FileUtil::getBufferFromAsset(void *buffer, const char *fileName) {
     off_t bufferSize = AAsset_getLength(asset);
 
     int size = AAsset_read(asset, buffer, (size_t) bufferSize);
+    AAsset_close(asset);
     return size;
 }
 
@@ -54,7 +90,7 @@ off_t FileUtil::getFileSize(const char *fileName) {
         return 0;
     }
     AAsset *asset = AAssetManager_open(mgr, fileName, AASSET_MODE_UNKNOWN);
-    if (asset == NULL) {
+    if (NULL == asset) {
         LOGE(" %s", "asset==NULL");
         return EOF;
     }
