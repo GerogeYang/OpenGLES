@@ -40,6 +40,8 @@
 #ifndef HEADER_SIMPLE_OPENGL_IMAGE_LIBRARY
 #define HEADER_SIMPLE_OPENGL_IMAGE_LIBRARY
 
+#include <android/asset_manager.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -140,6 +142,8 @@ enum
 	SOIL_HDR_RGBdivA = 1,
 	SOIL_HDR_RGBdivA2 = 2
 };
+
+void SOIL_init(AAssetManager *manager);
 
 /**
 	Loads an image from disk into an OpenGL texture.
@@ -372,22 +376,6 @@ unsigned char*
 		int force_channels
 	);
 
-/**
-	Loads an image from disk into an array of unsigned chars.
-	Note that *channels return the original channel count of the
-	image.  If force_channels was other than SOIL_LOAD_AUTO,
-	the resulting image has force_channels, but *channels may be
-	different (if the original image had a different channel
-	count).
-	\return 0 if failed, otherwise returns 1
-**/
-unsigned char*
-SOIL_load_image_from_fd
-		(
-				int const fd,
-				int *width, int *height, int *channels,
-				int force_channels
-		);
 /**
 	Loads an image from memory into an array of unsigned chars.
 	Note that *channels return the original channel count of the

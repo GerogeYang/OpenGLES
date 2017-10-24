@@ -30,14 +30,14 @@
 	#include <GL/gl.h>
 	#include <GL/glx.h>
 #else
-	#include <GLES3/gl3.h>
+	#include <GLES2/gl2.h>
 #endif
 #endif
 
-#include "SOIL.h"
-#include "stb_image_aug.h"
-#include "image_helper.h"
-#include "image_DXT.h"
+#include <SOIL.h>
+#include <stb_image_aug.h>
+#include <image_helper.h>
+#include <image_DXT.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -115,6 +115,11 @@ unsigned int
 	);
 
 /*	and the code magic begins here [8^)	*/
+AAssetManager *mgr = NULL;
+void SOIL_init(AAssetManager *manager){
+    mgr = manager;
+}
+
 unsigned int
 	SOIL_load_OGL_texture
 	(
@@ -191,7 +196,7 @@ unsigned int
 		return 0;
 	}
 	/*	try to load the image (only the HDR type) */
-	img = stbi_hdr_load_rgbe( filename, &width, &height, &channels, 4 );
+	img = stbi_hdr_load_rgbe(mgr, filename, &width, &height, &channels, 4 );
 	/*	channels holds the original number of channels, which may have been forced	*/
 	if( NULL == img )
 	{
@@ -1439,7 +1444,7 @@ unsigned char*
 		int force_channels
 	)
 {
-	unsigned char *result = stbi_load( filename,
+	unsigned char *result = stbi_load(mgr,filename,
 			width, height, channels, force_channels );
 	if( result == NULL )
 	{
@@ -1450,28 +1455,6 @@ unsigned char*
 	}
 	return result;
 }
-
-unsigned char*
-SOIL_load_image_from_fd
-		(
-				int const fd,
-				int *width, int *height, int *channels,
-				int force_channels
-		)
-{
-	unsigned char *result = stbi_load_from_fd( fd,
-									   width, height, channels, force_channels );
-
-	if( result == NULL )
-	{
-		result_string_pointer = stbi_failure_reason();
-	} else
-	{
-		result_string_pointer = "Image loaded";
-	}
-	return result;
-}
-
 
 unsigned char*
 	SOIL_load_image_from_memory

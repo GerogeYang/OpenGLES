@@ -83,14 +83,16 @@ static int dds_test(stbi *s)
 	return 1;
 }
 #ifndef STBI_NO_STDIO
-int      stbi_dds_test_file        (FILE *f)
+int      stbi_dds_test_file        (AAsset *asset)
 {
-   stbi s;
-   int r,n = ftell(f);
-   start_file(&s,f);
-   r = dds_test(&s);
-   fseek(f,n,SEEK_SET);
-   return r;
+	stbi s;
+	off_t n;
+	int r;
+	n = AAsset_getLength(asset) - AAsset_getRemainingLength(asset);
+	start_file(&s, asset);
+   	r = dds_test(&s);
+	AAsset_seek(asset, n, SEEK_SET);
+   	return r;
 }
 #endif
 
@@ -485,21 +487,21 @@ static stbi_uc *dds_load(stbi *s, int *x, int *y, int *comp, int req_comp)
 }
 
 #ifndef STBI_NO_STDIO
-stbi_uc *stbi_dds_load_from_file   (FILE *f,                  int *x, int *y, int *comp, int req_comp)
+stbi_uc *stbi_dds_load_from_file   (AAsset *asset,                  int *x, int *y, int *comp, int req_comp)
 {
 	stbi s;
-   start_file(&s,f);
-   return dds_load(&s,x,y,comp,req_comp);
+   	start_file(&s,asset);
+   	return dds_load(&s,x,y,comp,req_comp);
 }
 
-stbi_uc *stbi_dds_load             (char *filename,           int *x, int *y, int *comp, int req_comp)
+stbi_uc *stbi_dds_load             (AAssetManager *mgr, char *filename,           int *x, int *y, int *comp, int req_comp)
 {
-   stbi_uc *data;
-   FILE *f = fopen(filename, "rb");
-   if (!f) return NULL;
-   data = stbi_dds_load_from_file(f,x,y,comp,req_comp);
-   fclose(f);
-   return data;
+    AAsset *asset = AAssetManager_open(mgr, filename, AASSET_MODE_UNKNOWN);
+    stbi_uc *result;
+    if (NULL == asset) return NULL;
+    result = stbi_dds_load_from_file(asset, x, y, comp, req_comp);
+    AAsset_close(asset);
+    return result;
 }
 #endif
 

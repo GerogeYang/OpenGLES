@@ -2,10 +2,11 @@
 // Created by 7088"ES" on 2017/"ES"/22.
 //
 
+#include <SOIL.h>
 #include "Render.h"
 #include "../util/Debug.h"
-#include "../matrixstate/MatrixState.h"
 #include "../util/FileUtil.h"
+#include "../matrixstate/MatrixState.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -69,6 +70,7 @@ void Render::createEs(JNIEnv *env, jobject assetManager) {
     LOGD("~~~createEs()~~~\n");
     AAssetManager *aamIn = AAssetManager_fromJava(env, assetManager);
     FileUtil::setAAssetManager(aamIn);
+    SOIL_init(aamIn);
     init();
 }
 

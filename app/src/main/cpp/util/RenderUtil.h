@@ -5,7 +5,6 @@
 #ifndef OPENGLES_RENDERUTIL_H
 #define OPENGLES_RENDERUTIL_H
 
-
 #include <GLES2/gl2.h>
 
 class RenderUtil {
@@ -17,10 +16,6 @@ private:
     static void checkGLError(const char *op);
 
     static GLuint loadShader(GLenum type, const char *shaderCode);
-
-    static bool parseImage(const char *fileName, int &width, int &height, unsigned char *image);
-
-    static bool loadPNGImage(const char *fileName);
 
 public:
     static GLuint createProgram(const char *vertexCode, const char *fragmentCode);

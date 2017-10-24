@@ -51,17 +51,6 @@ char *FileUtil::readFromAsset(AAsset *asset) {
     return data;
 }
 
-int FileUtil::getFdFromAsset(AAsset *asset) {
-    LOGD("~~~getFdFromAsset()~~~\n");
-    off_t start, length;
-    int fd = AAsset_openFileDescriptor(asset, &start, &length);
-    if (fd < 0) {
-        LOGE("~~~get fd from asset failed!~~~\n");
-        return -1;
-    }
-    return fd;
-}
-
 void FileUtil::closeFromAsset(AAsset *asset) {
     LOGD("~~~closeFromAsset()~~~\n");
     AAsset_close(asset);

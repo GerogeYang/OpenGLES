@@ -71,7 +71,7 @@ void TriangleWithTexture::initShader() {
 
 void TriangleWithTexture::initTextures() {
     LOGD("~~~initTextures()~~~\n");
-    textureId = RenderUtil::createTexture("texture/star.png");
+    textureId = RenderUtil::createTexture("texture/shaker.jpg");
 }
 
 void TriangleWithTexture::initHandle() {

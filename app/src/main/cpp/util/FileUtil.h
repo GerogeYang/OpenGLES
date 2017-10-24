@@ -21,8 +21,6 @@ public:
 
     static char *readFromAsset(AAsset *asset);
 
-    static int getFdFromAsset(AAsset *asset);
-
     static void closeFromAsset(AAsset *asset);
 
     static int getBufferFromAsset(void *buffer, const char *fileName);
