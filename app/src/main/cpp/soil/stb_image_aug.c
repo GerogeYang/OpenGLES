@@ -63,7 +63,7 @@
              on 'test' only check type, not whether we support this variant
 */
 
-#include <stb_image_aug.h>
+#include <soil/stb_image_aug.h>
 
 #ifndef STBI_NO_HDR
 
@@ -110,7 +110,7 @@ typedef unsigned char validate_uint32[sizeof(uint32) == 4];
 
 #ifndef STBI_NO_DDS
 
-#include "include/stbi_DDS_aug.h"
+#include <soil/stbi_DDS_aug.h>
 
 #endif
 
@@ -3797,6 +3797,6 @@ int stbi_write_tga(char const *filename, int x, int y, int comp, void *data) {
 //	add in my DDS loading support
 #ifndef STBI_NO_DDS
 
-#include "include/stbi_DDS_aug_c.h"
+#include "soil/stbi_DDS_aug_c.h"
 
 #endif

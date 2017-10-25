@@ -4,10 +4,11 @@
 
 #include <malloc.h>
 #include <GLES/gl.h>
-#include <Debug.h>
-#include <RenderUtil.h>
-#include <CubeWithLight.h>
-#include "../../matrixstate/MatrixState.h"
+#include <util/Debug.h>
+#include <util/RenderUtil.h>
+#include <matrix/MatrixState.h>
+#include <shape/CubeWithLight.h>
+
 
 
 static GLfloat vertices[] = {

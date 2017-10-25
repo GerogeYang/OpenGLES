@@ -5,7 +5,8 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <Debug.h>
-#include <FileUtil.h>
+#include <util/FileUtil.h>
+
 
 #ifdef __cplusplus
 extern "C" {

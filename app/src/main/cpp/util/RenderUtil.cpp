@@ -2,10 +2,11 @@
 // Created by 70889 on 2017/9/27.
 //
 #include <stdlib.h>
-#include <Debug.h>
-#include <FileUtil.h>
-#include <SOIL.h>
-#include <RenderUtil.h>
+#include <util/Debug.h>
+#include <util/FileUtil.h>
+#include <util/RenderUtil.h>
+#include <soil/SOIL.h>
+
 
 GLuint RenderUtil::program = 0;
 GLuint RenderUtil::textureId = 0;
@@ -103,6 +104,11 @@ GLuint RenderUtil::createTexture(const char *fileName) {
     glGenTextures(1, textures);
     checkGLError("glGenTextures");
     textureId = textures[0];
+
+    if (0 == textureId) {
+        LOGE("~~~create Texture ID failed ~~~\n");
+        return textureId;
+    }
 
     unsigned char *image = NULL;
     int width, height, comp;

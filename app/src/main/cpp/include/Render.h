@@ -8,10 +8,11 @@
 #include <jni.h>
 #include <android/asset_manager_jni.h>
 #include <android/asset_manager.h>
-#include <Triangle.h>
-#include <Square.h>
-#include <CubeWithLight.h>
-#include <TriangleWithTexture.h>
+#include <shape/Triangle.h>
+#include <shape/Square.h>
+#include <shape/CubeWithLight.h>
+#include <shape/TriangleWithTexture.h>
+
 
 class Render {
 private:

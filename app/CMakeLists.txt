@@ -7,24 +7,45 @@ cmake_minimum_required(VERSION 3.4.1)
 
 # Set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/jniLibs/${Android_ABI})
 
-include_directories(src/main/cpp/modules/include)
-include_directories(src/main/cpp/soil/include)
-include_directories(src/main/cpp/util/include)
+include_directories(src/main/cpp/include)
+include_directories(src/main/cpp/include/assimp)
+include_directories(src/main/cpp/include/assimp/Compiler)
+include_directories(src/main/cpp/include/assimp/port/AndroidJNI)
+include_directories(src/main/cpp/include/element)
+include_directories(src/main/cpp/include/matrix)
+include_directories(src/main/cpp/include/shape)
+include_directories(src/main/cpp/include/soil)
+include_directories(src/main/cpp/include/util)
 
-aux_source_directory(src/main/cpp/render RENDER)
-aux_source_directory(src/main/cpp/util UTIL)
 aux_source_directory(src/main/cpp/element ELEMENT)
-aux_source_directory(src/main/cpp/matrix MATRIX)
-aux_source_directory(src/main/cpp/matrixstate MATRIXSTATE)
-aux_source_directory(src/main/cpp/soil SOIL)
 aux_source_directory(src/main/cpp/modules/shape MODULES_SHAPE)
 aux_source_directory(src/main/cpp/modules/model MODULES_MODEL)
+aux_source_directory(src/main/cpp/matrix MATRIX)
+aux_source_directory(src/main/cpp/render RENDER)
+aux_source_directory(src/main/cpp/soil SOIL)
+aux_source_directory(src/main/cpp/util UTIL)
+
 
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
+
+add_library(
+            libassimp
+
+            SHARED
+
+            IMPORTED)
+
+set_target_properties(
+            libassimp
+
+            PROPERTIES IMPORTED_LOCATION
+
+            ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libassimp.so)
+
 
 add_library( # Sets the name of the library.
              native-lib
@@ -34,14 +55,14 @@ add_library( # Sets the name of the library.
 
              # Provides a relative path to your source file(s).
              src/main/cpp/native-lib.cpp
-             ${RENDER}
-             ${UTIL}
+
              ${ELEMENT}
              ${MATRIX}
-             ${MATRIXSTATE}
-             ${SOIL}
              ${MODULES_SHAPE}
              ${MODULES_MODEL}
+             ${RENDER}
+             ${SOIL}
+             ${UTIL}
              )
 
 # Searches for a specified prebuilt library and stores the path as a
@@ -90,7 +111,7 @@ find_library( # Sets the name of the path variable.
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-                       native-lib
+                       native-lib libassimp
 
                        # Links the target library to the log library
                        # included in the NDK.

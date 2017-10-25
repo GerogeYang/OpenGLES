@@ -2,7 +2,7 @@
 // Created by 70889 on 2017/9/22.
 //
 
-#include "Vertex.h"
+#include <element/Vertex.h>
 
 void Vertex::vertex3DSet(Vertex3D *vertex, GLfloat x, GLfloat y, GLfloat z) {
     vertex->x = x;

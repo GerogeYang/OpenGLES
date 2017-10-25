@@ -3,10 +3,10 @@
 //
 
 #include <malloc.h>
-#include <Debug.h>
-#include <RenderUtil.h>
-#include <Square.h>
-#include "../../matrixstate/MatrixState.h"
+#include <util/Debug.h>
+#include <util/RenderUtil.h>
+#include <matrix/MatrixState.h>
+#include <shape/Square.h>
 
 static GLfloat vertices[] = {
         0.5f, 0.5f, 0.0f,// top right

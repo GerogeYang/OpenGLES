@@ -2,8 +2,8 @@
 // Created by root on 17-9-15.
 //
 
-#include "Matrix.h"
-#include "../util/include/Debug.h"
+#include <Debug.h>
+#include <matrix/Matrix.h>
 
 void Matrix::multiplyMM(float* result, int resultOffset, float* mlIn, int lhsOffset, float* mrIn, int rhsOffset)
 {

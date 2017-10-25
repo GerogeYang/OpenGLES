@@ -1,6 +1,6 @@
 #include <jni.h>
-#include <Debug.h>
-#include "render/Render.h"
+#include "include/util/Debug.h"
+#include "Render.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,6 +1,5 @@
 
-
-#include <BaseShape.h>
+#include <shape/BaseShape.h>
 
 BaseShape::BaseShape() {
 
