@@ -5,6 +5,7 @@
 #include <SOIL.h>
 #include "RenderUtil.h"
 #include "Debug.h"
+#include "FileUtil.h"
 
 GLuint RenderUtil::program = 0;
 GLuint RenderUtil::textureId = 0;
@@ -14,6 +15,11 @@ void RenderUtil::checkGLError(const char *op) {
     for (GLint error = glGetError(); error; error = glGetError()) {
         LOGI("after %s() glError (0x%x)\n", op, error);
     }
+}
+
+void RenderUtil::init(AAssetManager *mgr) {
+    FileUtil::init(mgr);
+    SOIL_init(mgr);
 }
 
 GLuint RenderUtil::loadShader(GLenum type, const char *shaderCode) {
@@ -42,7 +48,10 @@ GLuint RenderUtil::loadShader(GLenum type, const char *shaderCode) {
     return shader;
 }
 
-GLuint RenderUtil::createProgram(const char *vertexCode, const char *fragmentCode) {
+GLuint RenderUtil::createProgram(const char *vertexFileName, const char *fragmentFileName) {
+    char *vertexCode = FileUtil::read(vertexFileName);
+    char *fragmentCode = FileUtil::read(fragmentFileName);
+
     LOGD("~~~createProgram()~~~\n");
     GLuint vertextShader = loadShader(GL_VERTEX_SHADER, vertexCode);
     if (!vertextShader) {
@@ -83,12 +92,13 @@ GLuint RenderUtil::createProgram(const char *vertexCode, const char *fragmentCod
             program = 0;
         }
     }
+    free(vertexCode);
+    free(fragmentCode);
     return program;
 }
 
 GLuint RenderUtil::createTexture(const char *fileName) {
     LOGD("~~~createTexture()~~~\n");
-    bool reslut;
     GLuint *textures = new GLuint[1];
     glGenTextures(1, textures);
     checkGLError("glGenTextures");

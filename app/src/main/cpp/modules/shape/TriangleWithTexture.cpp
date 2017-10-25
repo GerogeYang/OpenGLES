@@ -5,7 +5,6 @@
 #include <malloc.h>
 #include <TriangleWithTexture.h>
 #include "../../util/Debug.h"
-#include "../../util/FileUtil.h"
 #include "../../util/RenderUtil.h"
 #include "../../matrixstate/MatrixState.h"
 
@@ -39,8 +38,7 @@ static GLushort indexs[] = {
 
 static int STEP = 5;
 
-TriangleWithTexture::TriangleWithTexture() : vertexShaderCode(NULL), fragmentShaderCode(NULL),
-                                             mMMatrix(NULL), mMVPMatrix(NULL),
+TriangleWithTexture::TriangleWithTexture() : mMMatrix(NULL), mMVPMatrix(NULL),
                                              program(0), textureId(0), mMMatrixHandle(0),
                                              mMVPMatrixHandle(0), mCameraHandle(0), mLightHandle(0),
                                              mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
@@ -51,27 +49,16 @@ TriangleWithTexture::TriangleWithTexture() : vertexShaderCode(NULL), fragmentSha
 
 TriangleWithTexture::~TriangleWithTexture() {
     LOGD("~~~destoryTriangleWithTexture()~~~\n");
-    if (NULL != vertexShaderCode) {
-        free(vertexShaderCode);
-        vertexShaderCode = NULL;
-    }
-
-    if (NULL != fragmentShaderCode) {
-        free(fragmentShaderCode);
-        fragmentShaderCode = NULL;
-    }
 }
 
 void TriangleWithTexture::initShader() {
     LOGD("~~~initShader()~~~\n");
-    vertexShaderCode = FileUtil::read("shader/vertextWithTexture.glsl");
-    fragmentShaderCode = FileUtil::read("shader/fragmentWithTexture.glsl");
-    program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
+    program = RenderUtil::createProgram("shader/vertextWithTexture.glsl", "shader/fragmentWithTexture.glsl");
 }
 
 void TriangleWithTexture::initTextures() {
     LOGD("~~~initTextures()~~~\n");
-    textureId = RenderUtil::createTexture("texture/shaker.jpg");
+    textureId = RenderUtil::createTexture("texture/bird.bmp");
 }
 
 void TriangleWithTexture::initHandle() {

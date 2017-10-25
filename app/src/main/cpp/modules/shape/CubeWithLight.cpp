@@ -6,7 +6,6 @@
 #include <GLES/gl.h>
 #include <CubeWithLight.h>
 #include "../../util/Debug.h"
-#include "../../util/FileUtil.h"
 #include "../../util/RenderUtil.h"
 #include "../../matrixstate/MatrixState.h"
 
@@ -81,7 +80,7 @@ static GLushort indexs[] = {
 
 static int STEP = 5;
 
-CubeWithLight::CubeWithLight() : vertexShaderCode(NULL), fragmentShaderCode(NULL), mMMatrix(NULL), mMVPMatrix(NULL),
+CubeWithLight::CubeWithLight() : mMMatrix(NULL), mMVPMatrix(NULL),
                                  program(0), mMMatrixHandle(0), mMVPMatrixHandle(0), mCameraHandle(0),
                                  mLightHandle(0), mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
                                  tx(0.0), ty(0.0), tz(0.0), rot(0.0), sx(1.0), sy(1.0), sz(1.0) {
@@ -89,22 +88,11 @@ CubeWithLight::CubeWithLight() : vertexShaderCode(NULL), fragmentShaderCode(NULL
 
 CubeWithLight::~CubeWithLight() {
     LOGD("~~~destoryCubeWithLight()~~~\n");
-    if (NULL != vertexShaderCode) {
-        free(vertexShaderCode);
-        vertexShaderCode = NULL;
-    }
-
-    if (NULL != fragmentShaderCode) {
-        free(fragmentShaderCode);
-        fragmentShaderCode = NULL;
-    }
 }
 
 void CubeWithLight::init() {
     LOGD("~~~init()~~~\n");
-    vertexShaderCode = FileUtil::read("shader/vertextWithLight.glsl");
-    fragmentShaderCode = FileUtil::read("shader/fragmentWithLight.glsl");
-    program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
+    program = RenderUtil::createProgram("shader/vertextWithLight.glsl", "shader/fragmentWithLight.glsl");
 }
 
 void CubeWithLight::change() {

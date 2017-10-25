@@ -7,6 +7,7 @@
 #include "../util/Debug.h"
 #include "../util/FileUtil.h"
 #include "../matrixstate/MatrixState.h"
+#include "../util/RenderUtil.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -69,8 +70,7 @@ void Render::init() {
 void Render::createEs(JNIEnv *env, jobject assetManager) {
     LOGD("~~~createEs()~~~\n");
     AAssetManager *aamIn = AAssetManager_fromJava(env, assetManager);
-    FileUtil::setAAssetManager(aamIn);
-    SOIL_init(aamIn);
+    RenderUtil::init(aamIn);
     init();
 }
 

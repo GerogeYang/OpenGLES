@@ -14,7 +14,7 @@ extern "C" {
 AAssetManager *FileUtil::mgr = NULL;
 
 
-void FileUtil::setAAssetManager(AAssetManager *manager) {
+void FileUtil::init(AAssetManager *manager) {
     LOGD("~~~setAAssetManager()~~~\n");
     mgr = manager;
 }

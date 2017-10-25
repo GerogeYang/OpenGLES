@@ -6,6 +6,7 @@
 #define OPENGLES_RENDERUTIL_H
 
 #include <GLES2/gl2.h>
+#include <android/asset_manager.h>
 
 class RenderUtil {
 private:
@@ -18,7 +19,9 @@ private:
     static GLuint loadShader(GLenum type, const char *shaderCode);
 
 public:
-    static GLuint createProgram(const char *vertexCode, const char *fragmentCode);
+    static void init(AAssetManager *mgr);
+
+    static GLuint createProgram(const char *vertexFileName, const char *fragmentFileName);
 
     static GLuint createTexture(const char *fileName);
 

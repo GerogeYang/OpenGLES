@@ -5,7 +5,6 @@
 #include <malloc.h>
 #include <Triangle.h>
 #include "../../util/Debug.h"
-#include "../../util/FileUtil.h"
 #include "../../util/RenderUtil.h"
 #include "../../matrixstate/MatrixState.h"
 
@@ -26,7 +25,7 @@ static GLushort indexs[] = {
         0, 1, 2  //逆时针绘图
 };
 
-Triangle::Triangle() : vertexShaderCode(NULL), fragmentShaderCode(NULL), mMMatrix(NULL), mMVPMatrix(NULL),
+Triangle::Triangle() : mMMatrix(NULL), mMVPMatrix(NULL),
                        program(0), mMMatrixHandle(0), mMVPMatrixHandle(0), mCameraHandle(0),
                        mLightHandle(0), mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
                        tx(0.0), ty(0.0), tz(0.0), rot(0.0), sx(1.0), sy(1.0), sz(1.0) {
@@ -35,22 +34,11 @@ Triangle::Triangle() : vertexShaderCode(NULL), fragmentShaderCode(NULL), mMMatri
 
 Triangle::~Triangle() {
     LOGD("~~~destoryTriangle()~~~\n");
-    if (NULL != vertexShaderCode) {
-        free(vertexShaderCode);
-        vertexShaderCode = NULL;
-    }
-
-    if (NULL != fragmentShaderCode) {
-        free(fragmentShaderCode);
-        fragmentShaderCode = NULL;
-    }
 }
 
 void Triangle::init() {
     LOGD("~~~init()~~~\n");
-    vertexShaderCode = FileUtil::read("shader/vertext.glsl");
-    fragmentShaderCode = FileUtil::read("shader/fragment.glsl");
-    program = RenderUtil::createProgram(vertexShaderCode, fragmentShaderCode);
+    program = RenderUtil::createProgram("shader/vertext.glsl", "shader/fragment.glsl");
 }
 
 void Triangle::change() {

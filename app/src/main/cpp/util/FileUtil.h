@@ -13,7 +13,7 @@ private:
     static AAssetManager *mgr;
 
 public:
-    static void setAAssetManager(AAssetManager *manager);
+    static void init(AAssetManager *manager);
 
     static char *read(const char *fileName);
 

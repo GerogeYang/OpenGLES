@@ -18,10 +18,6 @@ private:
 
     static const int COORDS_PER_TEXTURES = 2;
 
-    char *vertexShaderCode;
-
-    char *fragmentShaderCode;
-
     GLuint program;
 
     GLuint textureId;

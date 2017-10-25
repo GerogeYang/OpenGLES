@@ -13,10 +13,6 @@ private:
 
     static const int COORDS_PER_COLORS = 4;
 
-    char *vertexShaderCode;
-
-    char *fragmentShaderCode;
-
     GLuint program;
 
     GLuint mMMatrixHandle;
