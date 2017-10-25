@@ -4,8 +4,8 @@
 
 #include <stdio.h>
 #include <malloc.h>
-#include "FileUtil.h"
-#include "Debug.h"
+#include <Debug.h>
+#include <FileUtil.h>
 
 #ifdef __cplusplus
 extern "C" {

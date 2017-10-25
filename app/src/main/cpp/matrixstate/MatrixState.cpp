@@ -5,7 +5,7 @@
 #include <GLES/gl.h>
 #include "MatrixState.h"
 #include "../matrix/Matrix.h"
-#include "../util/Debug.h"
+#include "../util/include/Debug.h"
 
 int MatrixState::stackTop = -1;
 GLfloat **MatrixState::mStack;

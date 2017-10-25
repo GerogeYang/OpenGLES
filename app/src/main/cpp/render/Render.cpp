@@ -2,12 +2,10 @@
 // Created by 7088"ES" on 2017/"ES"/22.
 //
 
-#include <SOIL.h>
+#include <Debug.h>
+#include <RenderUtil.h>
 #include "Render.h"
-#include "../util/Debug.h"
-#include "../util/FileUtil.h"
 #include "../matrixstate/MatrixState.h"
-#include "../util/RenderUtil.h"
 
 #ifdef __cplusplus
 extern "C" {

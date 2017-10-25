@@ -2,10 +2,10 @@
 // Created by 70889 on 2017/9/27.
 //
 #include <stdlib.h>
+#include <Debug.h>
+#include <FileUtil.h>
 #include <SOIL.h>
-#include "RenderUtil.h"
-#include "Debug.h"
-#include "FileUtil.h"
+#include <RenderUtil.h>
 
 GLuint RenderUtil::program = 0;
 GLuint RenderUtil::textureId = 0;

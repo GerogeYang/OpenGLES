@@ -3,9 +3,9 @@
 //
 
 #include <malloc.h>
+#include <Debug.h>
+#include <RenderUtil.h>
 #include <Triangle.h>
-#include "../../util/Debug.h"
-#include "../../util/RenderUtil.h"
 #include "../../matrixstate/MatrixState.h"
 
 

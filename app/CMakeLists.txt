@@ -9,6 +9,7 @@ cmake_minimum_required(VERSION 3.4.1)
 
 include_directories(src/main/cpp/modules/include)
 include_directories(src/main/cpp/soil/include)
+include_directories(src/main/cpp/util/include)
 
 aux_source_directory(src/main/cpp/render RENDER)
 aux_source_directory(src/main/cpp/util UTIL)

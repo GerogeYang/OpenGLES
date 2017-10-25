@@ -3,7 +3,7 @@
 //
 
 #include "Matrix.h"
-#include "../util/Debug.h"
+#include "../util/include/Debug.h"
 
 void Matrix::multiplyMM(float* result, int resultOffset, float* mlIn, int lhsOffset, float* mrIn, int rhsOffset)
 {
