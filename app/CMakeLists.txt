@@ -13,15 +13,16 @@ include_directories(src/main/cpp/include/assimp/Compiler)
 include_directories(src/main/cpp/include/assimp/port/AndroidJNI)
 include_directories(src/main/cpp/include/element)
 include_directories(src/main/cpp/include/matrix)
+include_directories(src/main/cpp/include/model)
 include_directories(src/main/cpp/include/shape)
 include_directories(src/main/cpp/include/soil)
 include_directories(src/main/cpp/include/util)
 
 aux_source_directory(src/main/cpp/element ELEMENT)
+aux_source_directory(src/main/cpp/modules MODULES)
 aux_source_directory(src/main/cpp/modules/shape MODULES_SHAPE)
 aux_source_directory(src/main/cpp/modules/model MODULES_MODEL)
 aux_source_directory(src/main/cpp/matrix MATRIX)
-aux_source_directory(src/main/cpp/render RENDER)
 aux_source_directory(src/main/cpp/soil SOIL)
 aux_source_directory(src/main/cpp/util UTIL)
 
@@ -55,12 +56,13 @@ add_library( # Sets the name of the library.
 
              # Provides a relative path to your source file(s).
              src/main/cpp/native-lib.cpp
+             src/main/cpp/Render.cpp
 
              ${ELEMENT}
              ${MATRIX}
+             ${MODULES}
              ${MODULES_SHAPE}
              ${MODULES_MODEL}
-             ${RENDER}
              ${SOIL}
              ${UTIL}
              )
