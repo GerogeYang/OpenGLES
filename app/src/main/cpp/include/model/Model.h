@@ -7,8 +7,9 @@
 
 
 #include <GLES2/gl2.h>
+#include <shape/BaseShape.h>
 
-class Model {
+class Model : public BaseShape {
 private:
     static const int COORDS_PER_VERTEX = 3;
 
@@ -42,11 +43,9 @@ private:
 
     float tx,ty,tz,rot,sx,sy,sz;
 
+    void initModelData();
+
     void initShader();
-
-    void initModel();
-
-    void initTextures();
 
     void initHandle();
 

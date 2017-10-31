@@ -50,8 +50,8 @@ GLuint RenderUtil::loadShader(GLenum type, const char *shaderCode) {
 }
 
 GLuint RenderUtil::createProgram(const char *vertexFileName, const char *fragmentFileName) {
-    char *vertexCode = FileUtil::read(vertexFileName);
-    char *fragmentCode = FileUtil::read(fragmentFileName);
+    char *vertexCode = FileUtil::readFromAsset(vertexFileName);
+    char *fragmentCode = FileUtil::readFromAsset(fragmentFileName);
 
     LOGD("~~~createProgram()~~~\n");
     GLuint vertextShader = loadShader(GL_VERTEX_SHADER, vertexCode);

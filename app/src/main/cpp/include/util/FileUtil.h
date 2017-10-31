@@ -15,17 +15,7 @@ private:
 public:
     static void init(AAssetManager *manager);
 
-    static char *read(const char *fileName);
-
-    static AAsset *openFromAsset(const char *fileName);
-
-    static char *readFromAsset(AAsset *asset);
-
-    static void closeFromAsset(AAsset *asset);
-
-    static int getBufferFromAsset(void *buffer, const char *fileName);
-
-    static off_t getFileSize(const char *fileName);
+    static char *readFromAsset(const char *fileName);
 
 };
 
