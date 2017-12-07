@@ -25,6 +25,8 @@ public:
 
     static GLuint createTexture(const char *fileName);
 
+    static GLboolean loadModel(const char *fileName);
+
     static GLuint getFinalProgram();
 
     static GLuint getFinalTexture();

@@ -129,6 +129,11 @@ GLuint RenderUtil::createTexture(const char *fileName) {
     return textureId;
 }
 
+
+GLboolean RenderUtil::loadModel(const char *fileName) {
+
+}
+
 GLuint RenderUtil::getFinalProgram() {
     LOGD("~~~getFinalProgram()~~~\n");
     return program;

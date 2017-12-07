@@ -13,11 +13,12 @@ extern "C" {
 
 
 Render::Render() : _triangle(NULL), _square(NULL), _cubeWithLight(NULL),
-                   _triangleWithTexture(NULL) {
+                   _triangleWithTexture(NULL),_objmodel(NULL) {
 /*    _triangle = new Triangle();
     _square = new Square();*//*
     _cubeWithLight = new CubeWithLight();
     _triangleWithTexture = new TriangleWithTexture();*/
+    _objmodel = new ObjModel();
 }
 
 Render::~Render() {
@@ -42,6 +43,11 @@ Render::~Render() {
         delete _triangleWithTexture;
         _triangleWithTexture = NULL;
     }
+
+    if (NULL != _objmodel) {
+        delete _objmodel;
+        _objmodel = NULL;
+    }
 }
 
 void Render::printGLString(const char *name, GLenum s) {
@@ -63,6 +69,7 @@ void Render::init() {
     _square->init();*//*
     _cubeWithLight->init();
     _triangleWithTexture->init();*/
+    _objmodel->init();
 }
 
 void Render::createEs(JNIEnv *env, jobject assetManager) {
@@ -82,6 +89,7 @@ void Render::changeEs(int width, int height) {
     _square->change();*//*
     _cubeWithLight->change();
     _triangleWithTexture->change();*/
+    _objmodel->change();
 }
 
 void Render::drawEs() {
@@ -97,6 +105,9 @@ void Render::drawEs() {
     MatrixState::translate(1.5f, 0.0, 0.0);
     _triangleWithTexture->draw();
     MatrixState::popMatrix();*/
+    MatrixState::pushMatrix();
+    _objmodel->draw();
+    MatrixState::popMatrix();
 }
 
 

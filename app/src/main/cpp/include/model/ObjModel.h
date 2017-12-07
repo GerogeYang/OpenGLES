@@ -2,14 +2,13 @@
 // Created by root on 17-10-25.
 //
 
-#ifndef OPENGLES_MODEL_H
-#define OPENGLES_MODEL_H
+#ifndef OPENGLES_OBJMODEL_H
+#define OPENGLES_OBJMODEL_H
 
 
 #include <GLES2/gl2.h>
-#include <shape/BaseShape.h>
 
-class Model : public BaseShape {
+class ObjModel {
 private:
     static const int COORDS_PER_VERTEX = 3;
 
@@ -52,9 +51,9 @@ private:
     void setMMatrix();
 
 public:
-    Model();
+    ObjModel();
 
-    ~Model();
+    ~ObjModel();
 
     void init();
 
@@ -64,4 +63,4 @@ public:
 };
 
 
-#endif //OPENGLES_MODEL_H
+#endif //OPENGLES_OBJMODEL_H

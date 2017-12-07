@@ -12,6 +12,7 @@
 #include <shape/Square.h>
 #include <shape/CubeWithLight.h>
 #include <shape/TriangleWithTexture.h>
+#include <model/ObjModel.h>
 
 
 class Render {
@@ -23,6 +24,8 @@ private:
     CubeWithLight *_cubeWithLight;
 
     TriangleWithTexture *_triangleWithTexture;
+
+    ObjModel *_objmodel;
 
     void printGLString(const char *name, GLenum s);
 
