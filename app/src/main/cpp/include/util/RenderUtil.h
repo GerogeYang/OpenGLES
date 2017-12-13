@@ -7,7 +7,7 @@
 
 #include <GLES2/gl2.h>
 #include <android/asset_manager.h>
-#include <md2/Md2Header.h>
+#include <md2/Md2.h>
 
 class RenderUtil {
 private:
@@ -26,7 +26,7 @@ public:
 
     static GLuint createTexture(const char *fileName);
 
-    static GLboolean loadMd2Model(const char *fileName, Md2Header* md2);
+    static GLboolean loadMd2Model(const char *fileName, Md2* md2);
 
     static GLuint getFinalProgram();
 

@@ -6,7 +6,7 @@
 #define OPENGLES_MD2MODEL_H
 
 #include <GLES2/gl2.h>
-#include "Md2Header.h"
+#include "Md2.h"
 
 class Md2Model {
 private:
@@ -38,7 +38,7 @@ private:
 
     float tx,ty,tz,rot,sx,sy,sz;
 
-    Md2Header *_md2;
+    Md2 *_md2;
 
     void initShader();
 

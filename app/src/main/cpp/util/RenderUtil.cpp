@@ -131,10 +131,8 @@ GLuint RenderUtil::createTexture(const char *fileName) {
 }
 
 
-GLboolean RenderUtil::loadMd2Model(const char *fileName, Md2Header* md2) {
+GLboolean RenderUtil::loadMd2Model(const char *fileName, Md2* md2) {
     LOGD("~~~loadMd2Model()~~~\n");
-    LoadUtil::modelData = FileUtil::readFromAsset(fileName);
-
 }
 
 GLuint RenderUtil::getFinalProgram() {

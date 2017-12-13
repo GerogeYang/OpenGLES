@@ -60,6 +60,7 @@ void Md2Model::init() {
     LOGD("~~~init()~~~\n");
     initModelData();
     initShader();
+    initTextures();
     initHandle();
 }
 

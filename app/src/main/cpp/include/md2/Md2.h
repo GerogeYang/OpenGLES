@@ -2,8 +2,8 @@
 // Created by root on 17-12-11.
 //
 
-#ifndef OPENGLES_MD2HEADER_H
-#define OPENGLES_MD2HEADER_H
+#ifndef OPENGLES_MD2_H
+#define OPENGLES_MD2_H
 
 // md2 header
 typedef struct
@@ -95,7 +95,7 @@ typedef struct
 } animState_t;
 
 
-class Md2Header{
+class Md2{
 private:
     int             num_frames;         // number of frames
     int             num_xyz;            // number of vertices
@@ -109,4 +109,4 @@ private:
     animState_t     m_anim;             // animation
     float           m_scale;            // scale value
 };
-#endif //OPENGLES_MD2HEADER_H
+#endif //OPENGLES_MD2_H
