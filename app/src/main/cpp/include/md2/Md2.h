@@ -8,7 +8,7 @@
 // md2 header
 typedef struct
 {
-    int     magic;              // magic number. must be equal to "IDP2"
+    int     ident;              // magic number. must be equal to "IDP2"
     int     version;            // md2 version. must be equal to 8
 
     int     skinwidth;          // width of the texture
@@ -41,6 +41,11 @@ typedef struct
 
 } vertex_t;
 
+//skin
+typedef struct {
+    char name[64];              /* texture file name */
+} skin_t;
+
 // texture coordinates
 typedef struct
 {
@@ -48,6 +53,14 @@ typedef struct
     short    t;
 
 } texCoord_t;
+
+// triangle
+typedef struct
+{
+    short   index_xyz[3];    // indexes to triangle's vertices
+    short   index_st[3];     // indexes to vertices' texture coorinates
+
+} triangle_t;
 
 // frame
 typedef struct
@@ -58,14 +71,6 @@ typedef struct
     vertex_t    verts[1];       // first vertex of this frame
 
 } frame_t;
-
-// triangle
-typedef struct
-{
-    short   index_xyz[3];    // indexes to triangle's vertices
-    short   index_st[3];     // indexes to vertices' texture coorinates
-
-} triangle_t;
 
 // animation
 typedef struct
