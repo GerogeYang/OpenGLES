@@ -16,7 +16,7 @@ AAssetManager *FileUtil::mgr = NULL;
 
 
 void FileUtil::init(AAssetManager *manager) {
-    LOGD("~~~setAAssetManager()~~~\n");
+    LOGD("~~~init()~~~\n");
     mgr = manager;
 }
 

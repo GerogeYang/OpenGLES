@@ -6,7 +6,7 @@
 #include <util/FileUtil.h>
 #include <util/RenderUtil.h>
 #include <soil/SOIL.h>
-
+#include <util/LoadUtil.h>
 
 GLuint RenderUtil::program = 0;
 GLuint RenderUtil::textureId = 0;
@@ -19,6 +19,7 @@ void RenderUtil::checkGLError(const char *op) {
 }
 
 void RenderUtil::init(AAssetManager *mgr) {
+    LOGD("~~~init()~~~\n");
     FileUtil::init(mgr);
     SOIL_init(mgr);
 }
@@ -50,10 +51,10 @@ GLuint RenderUtil::loadShader(GLenum type, const char *shaderCode) {
 }
 
 GLuint RenderUtil::createProgram(const char *vertexFileName, const char *fragmentFileName) {
+    LOGD("~~~createProgram()~~~\n");
     char *vertexCode = FileUtil::readFromAsset(vertexFileName);
     char *fragmentCode = FileUtil::readFromAsset(fragmentFileName);
 
-    LOGD("~~~createProgram()~~~\n");
     GLuint vertextShader = loadShader(GL_VERTEX_SHADER, vertexCode);
     if (!vertextShader) {
         return 0;
@@ -130,7 +131,9 @@ GLuint RenderUtil::createTexture(const char *fileName) {
 }
 
 
-GLboolean RenderUtil::loadModel(const char *fileName) {
+GLboolean RenderUtil::loadMd2Model(const char *fileName, Md2Header* md2) {
+    LOGD("~~~loadMd2Model()~~~\n");
+    LoadUtil::modelData = FileUtil::readFromAsset(fileName);
 
 }
 

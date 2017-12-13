@@ -12,7 +12,7 @@
 #include <shape/Square.h>
 #include <shape/CubeWithLight.h>
 #include <shape/TriangleWithTexture.h>
-#include <model/ObjModel.h>
+#include <md2/Md2Model.h>
 
 
 class Render {
@@ -25,7 +25,7 @@ private:
 
     TriangleWithTexture *_triangleWithTexture;
 
-    ObjModel *_objmodel;
+    Md2Model *_md2model;
 
     void printGLString(const char *name, GLenum s);
 

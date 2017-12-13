@@ -2,42 +2,50 @@
 // Created by root on 17-10-25.
 //
 
-#include <model/ObjModel.h>
+#include <md2/Md2Model.h>
 #include <util/Debug.h>
 #include <util/RenderUtil.h>
 #include <matrix/MatrixState.h>
 
 static int STEP = 5;
 
-ObjModel::ObjModel() : mMMatrix(NULL), mMVPMatrix(NULL),
-                 program(0), textureId(0), mMMatrixHandle(0),
-                 mMVPMatrixHandle(0), mCameraHandle(0), mLightHandle(0),
-                 mPositionHandle(0), mNormalHandle(0), mColorHandle(0),
-                 mTextureCoordHandle(0),
-                 tx(0.0), ty(0.0), tz(0.0), rot(0.0), sx(1.0), sy(1.0),
-                 sz(1.0) {
+Md2Model::Md2Model():program(0), textureId(0),
+                     mMMatrixHandle(0), mMVPMatrixHandle(0),
+                     mCameraHandle(0), mLightHandle(0),
+                     mPositionHandle(0), mNormalHandle(0),
+                     mTextureCoordHandle(0), mColorHandle(0),
+                     tx(0.0), ty(0.0), tz(0.0), rot(0.0),
+                     sx(1.0), sy(1.0), sz(1.0), _md2(NULL) {
 
 }
 
-ObjModel::~ObjModel() {
+Md2Model::~Md2Model() {
     LOGD("~~~destoryModel()~~~\n");
+    if (NULL != _md2){
+        delete _md2;
+    }
 }
 
 
-void ObjModel::initShader() {
+void Md2Model::initShader() {
     LOGD("~~~initShader()~~~\n");
     program = RenderUtil::createProgram("shader/vertextWithTexture.glsl", "shader/fragmentWithTexture.glsl");
 }
 
-void ObjModel::initModelData() {
+void Md2Model::initModelData() {
     LOGD("~~~initModelData()~~~\n");
-    bool reslut = RenderUtil::loadModel("model/tz.obj");
+    bool reslut = RenderUtil::loadMd2Model("model/fish.md2",_md2);
     if (!reslut) {
-        LOGD("~~~load model failed~~~\n");
+        LOGE("~~~load model failed~~~\n");
     }
 }
 
-void ObjModel::initHandle() {
+void Md2Model::initTextures() {
+    LOGD("~~~initTextures()~~~\n");
+    textureId = RenderUtil::createTexture("texture/bird.bmp");
+}
+
+void Md2Model::initHandle() {
     LOGD("~~~initHandle()~~~\n");
     mCameraHandle = (GLuint) glGetUniformLocation(program, "uCamera");
     mLightHandle = (GLuint) glGetUniformLocation(program, "uLightDirection");
@@ -48,26 +56,26 @@ void ObjModel::initHandle() {
     mTextureCoordHandle = (GLuint) glGetAttribLocation(program, "aTextureCoord");
 }
 
-void ObjModel::init() {
+void Md2Model::init() {
     LOGD("~~~init()~~~\n");
     initModelData();
     initShader();
     initHandle();
 }
 
-void ObjModel::change() {
+void Md2Model::change() {
     LOGD("~~~change()~~~\n");
 }
 
-void ObjModel::setMMatrix() {
+void Md2Model::updateMMatrix() {
     LOGD("~~~setMMatrix()~~~\n");
     MatrixState::rotate(rot, 1.0, 0.0, 0.0);
     rot = ((int) rot + STEP) % 360;
 }
 
-void ObjModel::draw() {
+void Md2Model::draw() {
     LOGD("~~~draw()~~~\n");
-    setMMatrix();
+    updateMMatrix();
 
     glUseProgram(program);
     glUniform3fv(mCameraHandle, 1, MatrixState::getCameraLocation());

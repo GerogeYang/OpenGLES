@@ -10,16 +10,16 @@ cmake_minimum_required(VERSION 3.4.1)
 include_directories(src/main/cpp/include)
 include_directories(src/main/cpp/include/element)
 include_directories(src/main/cpp/include/matrix)
-include_directories(src/main/cpp/include/model)
+include_directories(src/main/cpp/include/md2)
 include_directories(src/main/cpp/include/shape)
 include_directories(src/main/cpp/include/soil)
 include_directories(src/main/cpp/include/util)
 
 aux_source_directory(src/main/cpp/element ELEMENT)
-aux_source_directory(src/main/cpp/modules MODULES)
-aux_source_directory(src/main/cpp/modules/shape MODULES_SHAPE)
-aux_source_directory(src/main/cpp/modules/model MODULES_MODEL)
 aux_source_directory(src/main/cpp/matrix MATRIX)
+aux_source_directory(src/main/cpp/modules MODULES)
+aux_source_directory(src/main/cpp/modules/md2 MODULES_MD2)
+aux_source_directory(src/main/cpp/modules/shape MODULES_SHAPE)
 aux_source_directory(src/main/cpp/soil SOIL)
 aux_source_directory(src/main/cpp/util UTIL)
 
@@ -43,8 +43,8 @@ add_library( # Sets the name of the library.
              ${ELEMENT}
              ${MATRIX}
              ${MODULES}
+             ${MODULES_MD2}
              ${MODULES_SHAPE}
-             ${MODULES_MODEL}
              ${SOIL}
              ${UTIL}
              )

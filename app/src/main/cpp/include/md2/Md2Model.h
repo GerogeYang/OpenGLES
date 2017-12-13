@@ -1,14 +1,14 @@
 //
-// Created by root on 17-10-25.
+// Created by root on 17-12-11.
 //
 
-#ifndef OPENGLES_OBJMODEL_H
-#define OPENGLES_OBJMODEL_H
-
+#ifndef OPENGLES_MD2MODEL_H
+#define OPENGLES_MD2MODEL_H
 
 #include <GLES2/gl2.h>
+#include "Md2Header.h"
 
-class ObjModel {
+class Md2Model {
 private:
     static const int COORDS_PER_VERTEX = 3;
 
@@ -32,35 +32,35 @@ private:
 
     GLuint mNormalHandle;
 
-    GLuint mColorHandle;
-
     GLuint mTextureCoordHandle;
 
-    GLfloat *mMMatrix;
-
-    GLfloat *mMVPMatrix;
+    GLuint mColorHandle;
 
     float tx,ty,tz,rot,sx,sy,sz;
 
-    void initModelData();
+    Md2Header *_md2;
 
     void initShader();
 
+    void initModelData();
+
+    void initTextures();
+
     void initHandle();
 
-    void setMMatrix();
+    void updateMMatrix();
 
 public:
-    ObjModel();
+    Md2Model();
 
-    ~ObjModel();
+    ~Md2Model();
 
     void init();
 
     void change();
 
     void draw();
+
 };
 
-
-#endif //OPENGLES_OBJMODEL_H
+#endif //OPENGLES_MD2MODEL_H
