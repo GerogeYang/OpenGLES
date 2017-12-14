@@ -13,12 +13,13 @@ extern "C" {
 
 
 Render::Render() : _triangle(NULL), _square(NULL), _cubeWithLight(NULL),
-                   _triangleWithTexture(NULL),_md2model(NULL) {
+                   _triangleWithTexture(NULL),_md2model(NULL),_model(NULL) {
 /*    _triangle = new Triangle();
     _square = new Square();
     _cubeWithLight = new CubeWithLight();
-    _triangleWithTexture = new TriangleWithTexture();*/
-    _md2model = new Md2Model();
+    _triangleWithTexture = new TriangleWithTexture();
+    _md2model = new Md2Model();*/
+    _model = new Model();
 }
 
 Render::~Render() {
@@ -48,6 +49,11 @@ Render::~Render() {
         delete _md2model;
         _md2model = NULL;
     }
+
+    if (NULL != _model) {
+        delete _model;
+        _model = NULL;
+    }
 }
 
 void Render::printGLString(const char *name, GLenum s) {
@@ -68,8 +74,8 @@ void Render::init() {
 /*    _triangle->init();
     _square->init();
     _cubeWithLight->init();
-    _triangleWithTexture->init();*/
-    _md2model->init();
+    _triangleWithTexture->init();
+    _md2model->init();*/
 }
 
 void Render::createEs(JNIEnv *env, jobject assetManager) {
@@ -88,8 +94,8 @@ void Render::changeEs(int width, int height) {
 /*    _triangle->change();
     _square->change();
     _cubeWithLight->change();
-    _triangleWithTexture->change();*/
-    _md2model->change();
+    _triangleWithTexture->change();
+    _md2model->change();*/
 }
 
 void Render::drawEs() {
@@ -104,10 +110,10 @@ void Render::drawEs() {
     MatrixState::pushMatrix();
     MatrixState::translate(1.5f, 0.0, 0.0);
     _triangleWithTexture->draw();
-    MatrixState::popMatrix();*/
+    MatrixState::popMatrix();
     MatrixState::pushMatrix();
     _md2model->draw();
-    MatrixState::popMatrix();
+    MatrixState::popMatrix();*/
 }
 
 

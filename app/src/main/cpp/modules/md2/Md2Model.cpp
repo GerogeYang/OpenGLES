@@ -34,7 +34,7 @@ void Md2Model::initShader() {
 
 void Md2Model::initModelData() {
     LOGD("~~~initModelData()~~~\n");
-    bool reslut = RenderUtil::loadMd2Model("model/fish.md2",_md2);
+    bool reslut = RenderUtil::loadModel("model/fish.md2");
     if (!reslut) {
         LOGE("~~~load model failed~~~\n");
     }

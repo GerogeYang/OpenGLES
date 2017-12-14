@@ -2,11 +2,14 @@
 // Created by 70889 on 2017/9/27.
 //
 #include <stdlib.h>
+#include <SOIL.h>
 #include <util/Debug.h>
 #include <util/FileUtil.h>
 #include <util/RenderUtil.h>
-#include <soil/SOIL.h>
-#include <util/LoadUtil.h>
+#include <assimp/port/AndroidJNI/AndroidJNIIOSystem.h>
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+
 
 GLuint RenderUtil::program = 0;
 GLuint RenderUtil::textureId = 0;
@@ -131,8 +134,18 @@ GLuint RenderUtil::createTexture(const char *fileName) {
 }
 
 
-GLboolean RenderUtil::loadMd2Model(const char *fileName, Md2* md2) {
+GLboolean RenderUtil::loadModel(const char *fileName) {
     LOGD("~~~loadMd2Model()~~~\n");
+    Assimp::Importer *importer = new Assimp::Importer;
+    const aiScene* scene = importer->ReadFile(fileName, aiProcessPreset_TargetRealtime_Quality);
+
+    // Check if import failed
+    if (!scene) {
+        std::string errorString = importer->GetErrorString();
+        LOGE("Scene import failed: %s", errorString.c_str());
+        return GL_FALSE;
+    }
+    return GL_TRUE;
 }
 
 GLuint RenderUtil::getFinalProgram() {

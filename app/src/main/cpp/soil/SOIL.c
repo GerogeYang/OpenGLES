@@ -34,10 +34,10 @@
 #endif
 #endif
 
-#include <soil/SOIL.h>
-#include <soil/stb_image_aug.h>
-#include <soil/image_helper.h>
-#include <soil/image_DXT.h>
+#include <SOIL.h>
+#include <stb_image_aug.h>
+#include <image_helper.h>
+#include <image_DXT.h>
 
 #include <stdlib.h>
 #include <string.h>

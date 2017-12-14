@@ -1,0 +1,8 @@
+//
+// Created by root on 17-12-14.
+//
+
+#ifndef OPENGLES_ASSIMPLOADER_H
+#define OPENGLES_ASSIMPLOADER_H
+
+#endif //OPENGLES_ASSIMPLOADER_H

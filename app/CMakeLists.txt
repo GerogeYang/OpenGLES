@@ -11,18 +11,51 @@ include_directories(src/main/cpp/include)
 include_directories(src/main/cpp/include/element)
 include_directories(src/main/cpp/include/matrix)
 include_directories(src/main/cpp/include/md2)
+include_directories(src/main/cpp/include/model)
 include_directories(src/main/cpp/include/shape)
-include_directories(src/main/cpp/include/soil)
 include_directories(src/main/cpp/include/util)
 
 aux_source_directory(src/main/cpp/element ELEMENT)
 aux_source_directory(src/main/cpp/matrix MATRIX)
 aux_source_directory(src/main/cpp/modules MODULES)
 aux_source_directory(src/main/cpp/modules/md2 MODULES_MD2)
+aux_source_directory(src/main/cpp/modules/model MODULES_MODEL)
 aux_source_directory(src/main/cpp/modules/shape MODULES_SHAPE)
-aux_source_directory(src/main/cpp/soil SOIL)
 aux_source_directory(src/main/cpp/util UTIL)
 
+include_directories(src/main/cpp/soil/include)
+aux_source_directory(src/main/cpp/soil SOIL)
+
+include_directories(src/main/cpp/assimp/include)
+include_directories(src/main/cpp/assimp/contrib/irrXML)
+include_directories(src/main/cpp/assimp/contrib/openddlparser/include)
+include_directories(src/main/cpp/assimp/contrib/poly2tri)
+include_directories(src/main/cpp/assimp/contrib/unzip)
+include_directories(src/main/cpp/assimp/contrib/zip)
+
+aux_source_directory(src/main/cpp/assimp/code ASSIMP)
+aux_source_directory(src/main/cpp/assimp/contrib/clipper CLIPPER)
+aux_source_directory(src/main/cpp/assimp/contrib/irrXML IRRXML)
+aux_source_directory(src/main/cpp/assimp/contrib/openddlparser/code OPENDDLPARSER)
+aux_source_directory(src/main/cpp/assimp/contrib/poly2tri POLY2TRI)
+aux_source_directory(src/main/cpp/assimp/contrib/unzip UNZIP)
+aux_source_directory(src/main/cpp/assimp/contrib/zip ZIP)
+
+add_library(# Sets the name of the library.
+            assimp-lib
+
+            # Sets the library as a shared library.
+            SHARED
+
+            # Provides a relative path to your source file(s).
+            ${CLIPPER}
+            ${IRRXML}
+            ${OPENDDLPARSER}
+            ${POLY2TRI}
+            ${UNZIP}
+            ${ZIP}
+            ${ASSIMP}
+           )
 
 
 # Creates and names a library, sets it as either STATIC
@@ -44,6 +77,7 @@ add_library( # Sets the name of the library.
              ${MATRIX}
              ${MODULES}
              ${MODULES_MD2}
+             ${MODULES_MODEL}
              ${MODULES_SHAPE}
              ${SOIL}
              ${UTIL}
@@ -90,6 +124,13 @@ find_library( # Sets the name of the path variable.
               # you want CMake to locate.
               android )
 
+find_library(# Sets the name of the path variable.
+              z-lib
+              # Specifies the name of the NDK library that
+              # you want CMake to locate.
+              z
+             )
+
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
@@ -99,9 +140,26 @@ target_link_libraries( # Specifies the target library.
 
                        # Links the target library to the log library
                        # included in the NDK.
+                       assimp-lib
                        ${log-lib}
                        ${EGL-lib}
                        ${GLESv1-lib}
                        ${GLESv2-lib}
                        ${Android-lib}
                        )
+
+target_link_libraries( # Specifies the target library.
+                       assimp-lib
+
+                       # Links the target library to the log library
+                       # included in the NDK.
+                       ${z-lib}
+                       ${log-lib}
+                       ${Android-lib}
+                       )
+
+
+add_dependencies(
+                  native-lib
+                  assimp-lib
+                )
