@@ -6,6 +6,7 @@
 #include <util/Debug.h>
 #include <util/RenderUtil.h>
 #include <matrix/MatrixState.h>
+#include <util/FileUtil.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,9 +17,9 @@ Render::Render() : _triangle(NULL), _square(NULL), _cubeWithLight(NULL),
                    _triangleWithTexture(NULL),_md2model(NULL),_model(NULL) {
 /*    _triangle = new Triangle();
     _square = new Square();
-    _cubeWithLight = new CubeWithLight();
+    _cubeWithLight = new CubeWithLight();*/
     _triangleWithTexture = new TriangleWithTexture();
-    _md2model = new Md2Model();*/
+    /*_md2model = new Md2Model();*/
     _model = new Model();
 }
 
@@ -73,15 +74,23 @@ void Render::init() {
     MatrixState::setLightLocation(30.0f, 50.0f, 500.0f);
 /*    _triangle->init();
     _square->init();
-    _cubeWithLight->init();
+    _cubeWithLight->init();*/
     _triangleWithTexture->init();
-    _md2model->init();*/
+/*    _md2model->init();*/
+    _model->init();
 }
 
-void Render::createEs(JNIEnv *env, jobject assetManager) {
+void Render::createEs(JNIEnv *env, jobject assetManager, jstring pathToInternalDir) {
     LOGD("~~~createEs()~~~\n");
     AAssetManager *aamIn = AAssetManager_fromJava(env, assetManager);
-    RenderUtil::init(aamIn);
+
+    const char *cPathToInternalDir;
+    std::string apkInternalPath;
+    cPathToInternalDir = env->GetStringUTFChars(pathToInternalDir, NULL);
+    apkInternalPath = std::string(cPathToInternalDir);
+    env->ReleaseStringUTFChars(pathToInternalDir, cPathToInternalDir);
+
+    FileUtil::init(aamIn, apkInternalPath);
     init();
 }
 
@@ -93,9 +102,10 @@ void Render::changeEs(int width, int height) {
     MatrixState::setCamera(5.0f, 5.0f, 10.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 /*    _triangle->change();
     _square->change();
-    _cubeWithLight->change();
+    _cubeWithLight->change();*/
     _triangleWithTexture->change();
-    _md2model->change();*/
+/*    _md2model->change();*/
+    _model->change();
 }
 
 void Render::drawEs() {
@@ -106,14 +116,18 @@ void Render::drawEs() {
     MatrixState::pushMatrix();
     MatrixState::translate(-1.5f, 0.0, 0.0);
     _cubeWithLight->draw();
-    MatrixState::popMatrix();
+    MatrixState::popMatrix();*/
     MatrixState::pushMatrix();
-    MatrixState::translate(1.5f, 0.0, 0.0);
+    MatrixState::translate(-1.5f, 0.0, 0.0);
     _triangleWithTexture->draw();
     MatrixState::popMatrix();
-    MatrixState::pushMatrix();
+/*    MatrixState::pushMatrix();
     _md2model->draw();
     MatrixState::popMatrix();*/
+    MatrixState::pushMatrix();
+    MatrixState::translate(1.5f, 0.0, 0.0);
+    _model->draw();
+    MatrixState::popMatrix();
 }
 
 

@@ -1,15 +1,12 @@
 //
 // Created by 70889 on 2017/9/27.
 //
+
 #include <stdlib.h>
 #include <SOIL.h>
-#include <util/Debug.h>
-#include <util/FileUtil.h>
-#include <util/RenderUtil.h>
-#include <assimp/port/AndroidJNI/AndroidJNIIOSystem.h>
-#include <assimp/Importer.hpp>
-#include <assimp/postprocess.h>
-
+#include <Debug.h>
+#include <FileUtil.h>
+#include <RenderUtil.h>
 
 GLuint RenderUtil::program = 0;
 GLuint RenderUtil::textureId = 0;
@@ -23,8 +20,7 @@ void RenderUtil::checkGLError(const char *op) {
 
 void RenderUtil::init(AAssetManager *mgr) {
     LOGD("~~~init()~~~\n");
-    FileUtil::init(mgr);
-    SOIL_init(mgr);
+    //SOIL_init(mgr);
 }
 
 GLuint RenderUtil::loadShader(GLenum type, const char *shaderCode) {
@@ -102,8 +98,8 @@ GLuint RenderUtil::createProgram(const char *vertexFileName, const char *fragmen
     return program;
 }
 
-GLuint RenderUtil::createTexture(const char *fileName) {
-    LOGD("~~~createTexture()~~~\n");
+GLuint RenderUtil::loadTexture(const char *fileName) {
+    LOGD("~~~loadTexture()~~~\n");
     GLuint *textures = new GLuint[1];
     glGenTextures(1, textures);
     checkGLError("glGenTextures");
@@ -131,21 +127,6 @@ GLuint RenderUtil::createTexture(const char *fileName) {
     SOIL_free_image_data(image);
 
     return textureId;
-}
-
-
-GLboolean RenderUtil::loadModel(const char *fileName) {
-    LOGD("~~~loadMd2Model()~~~\n");
-    Assimp::Importer *importer = new Assimp::Importer;
-    const aiScene* scene = importer->ReadFile(fileName, aiProcessPreset_TargetRealtime_Quality);
-
-    // Check if import failed
-    if (!scene) {
-        std::string errorString = importer->GetErrorString();
-        LOGE("Scene import failed: %s", errorString.c_str());
-        return GL_FALSE;
-    }
-    return GL_TRUE;
 }
 
 GLuint RenderUtil::getFinalProgram() {

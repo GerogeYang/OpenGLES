@@ -7,6 +7,7 @@
 
 #include <GLES2/gl2.h>
 #include <android/asset_manager.h>
+#include <model/AssimpLoader.h>
 
 class RenderUtil {
 private:
@@ -23,9 +24,7 @@ public:
 
     static GLuint createProgram(const char *vertexFileName, const char *fragmentFileName);
 
-    static GLuint createTexture(const char *fileName);
-
-    static GLboolean loadModel(const char *fileName);
+    static GLuint loadTexture(const char *fileName);
 
     static GLuint getFinalProgram();
 

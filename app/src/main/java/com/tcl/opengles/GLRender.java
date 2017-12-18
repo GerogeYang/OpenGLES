@@ -30,7 +30,7 @@ public class GLRender implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         tLog.d(TAG, "~~~onSurfaceCreated()~~~");
-        JNI.createEsJNI(mContext.getAssets());
+        JNI.createEsJNI(mContext.getAssets(), mContext.getFilesDir().getAbsolutePath());
     }
 
     @Override

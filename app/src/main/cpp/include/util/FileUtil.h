@@ -7,15 +7,24 @@
 
 #include <android/asset_manager_jni.h>
 #include <android/asset_manager.h>
+#include <string>
 
 class FileUtil {
 private:
     static AAssetManager *mgr;
 
-public:
-    static void init(AAssetManager *manager);
+    static std::string apkInternalPath;
 
-    static char *readFromAsset(const char *fileName);
+public:
+    static void init(AAssetManager *manager, std::string path);
+
+    static char *readFromAsset(std::string fileName);
+
+    static bool extractAssetReturnFilename(std::string assetFilename, std::string &fileName, bool checkIfFileIsAvailable = false);
+
+    static std::string getFileName(std::string fileName);
+
+    static std::string getDirectoryName(std::string fullFileName);
 
 };
 

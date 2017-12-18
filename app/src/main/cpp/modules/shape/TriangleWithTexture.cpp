@@ -59,7 +59,7 @@ void TriangleWithTexture::initShader() {
 
 void TriangleWithTexture::initTextures() {
     LOGD("~~~initTextures()~~~\n");
-    textureId = RenderUtil::createTexture("texture/bird.bmp");
+    textureId = RenderUtil::loadTexture("texture/bird.bmp");
 }
 
 void TriangleWithTexture::initHandle() {

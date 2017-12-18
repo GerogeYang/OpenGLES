@@ -26,6 +26,38 @@ aux_source_directory(src/main/cpp/util UTIL)
 include_directories(src/main/cpp/soil/include)
 aux_source_directory(src/main/cpp/soil SOIL)
 
+include_directories(src/main/cpp/opencv/include)
+include_directories(src/main/cpp/opencv/include/opencv)
+include_directories(src/main/cpp/opencv/include/opencv2)
+include_directories(src/main/cpp/opencv/include/opencv2/calib3d)
+include_directories(src/main/cpp/opencv/include/opencv2/contrib)
+include_directories(src/main/cpp/opencv/include/opencv2/core)
+include_directories(src/main/cpp/opencv/include/opencv2/core/cuda)
+include_directories(src/main/cpp/opencv/include/opencv2/core/cuda/detail)
+include_directories(src/main/cpp/opencv/include/opencv2/core/hal)
+include_directories(src/main/cpp/opencv/include/opencv2/core/utils)
+include_directories(src/main/cpp/opencv/include/opencv2/dnn)
+include_directories(src/main/cpp/opencv/include/opencv2/features2d)
+include_directories(src/main/cpp/opencv/include/opencv2/flann)
+include_directories(src/main/cpp/opencv/include/opencv2/highgui)
+include_directories(src/main/cpp/opencv/include/opencv2/imgcodecs)
+include_directories(src/main/cpp/opencv/include/opencv2/imgproc)
+include_directories(src/main/cpp/opencv/include/opencv2/imgproc/detail)
+include_directories(src/main/cpp/opencv/include/opencv2/imgproc/hal)
+include_directories(src/main/cpp/opencv/include/opencv2/legacy)
+include_directories(src/main/cpp/opencv/include/opencv2/ml)
+include_directories(src/main/cpp/opencv/include/opencv2/objdetect)
+include_directories(src/main/cpp/opencv/include/opencv2/ocl)
+include_directories(src/main/cpp/opencv/include/opencv2/photo)
+include_directories(src/main/cpp/opencv/include/opencv2/shape)
+include_directories(src/main/cpp/opencv/include/opencv2/stitching)
+include_directories(src/main/cpp/opencv/include/opencv2/stitching/detail)
+include_directories(src/main/cpp/opencv/include/opencv2/superres)
+include_directories(src/main/cpp/opencv/include/opencv2/ts)
+include_directories(src/main/cpp/opencv/include/opencv2/video)
+include_directories(src/main/cpp/opencv/include/opencv2/videoio)
+include_directories(src/main/cpp/opencv/include/opencv2/videostab)
+
 include_directories(src/main/cpp/assimp/include)
 include_directories(src/main/cpp/assimp/contrib/irrXML)
 include_directories(src/main/cpp/assimp/contrib/openddlparser/include)
@@ -40,23 +72,6 @@ aux_source_directory(src/main/cpp/assimp/contrib/openddlparser/code OPENDDLPARSE
 aux_source_directory(src/main/cpp/assimp/contrib/poly2tri POLY2TRI)
 aux_source_directory(src/main/cpp/assimp/contrib/unzip UNZIP)
 aux_source_directory(src/main/cpp/assimp/contrib/zip ZIP)
-
-add_library(# Sets the name of the library.
-            assimp-lib
-
-            # Sets the library as a shared library.
-            SHARED
-
-            # Provides a relative path to your source file(s).
-            ${CLIPPER}
-            ${IRRXML}
-            ${OPENDDLPARSER}
-            ${POLY2TRI}
-            ${UNZIP}
-            ${ZIP}
-            ${ASSIMP}
-           )
-
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -82,6 +97,108 @@ add_library( # Sets the name of the library.
              ${SOIL}
              ${UTIL}
              )
+
+add_library(# Sets the name of the library.
+            assimp-lib
+
+            # Sets the library as a shared library.
+            SHARED
+
+            # Provides a relative path to your source file(s).
+            ${ASSIMP}
+            ${CLIPPER}
+            ${IRRXML}
+            ${OPENDDLPARSER}
+            ${POLY2TRI}
+            ${UNZIP}
+            ${ZIP}
+           )
+
+add_library(# Sets the name of the library.
+            soil-lib
+
+            # Sets the library as a shared library.
+            SHARED
+
+            # Provides a relative path to your source file(s).
+            ${SOIL}
+           )
+
+add_library(# Sets the name of the library.
+            opencv-lib
+
+            # Sets the library as a shared library.
+            SHARED
+
+            # Provides a relative path to your source file(s).
+            IMPORTED
+           )
+
+
+set_target_properties(
+                    opencv-lib
+
+                    PROPERTIES IMPORTED_LOCATION
+
+                    ${CMAKE_SOURCE_DIR}/opencv/libs/${ANDROID_ABI}/libopencv_java3.so
+                    )
+
+add_library(# Sets the name of the library.
+            opencv-core
+
+            # Sets the library as a shared library.
+            STATIC
+
+            # Provides a relative path to your source file(s).
+            IMPORTED
+           )
+
+
+set_target_properties(
+                    opencv-core
+
+                    PROPERTIES IMPORTED_LOCATION
+
+                    ${CMAKE_SOURCE_DIR}/opencv/libs/${ANDROID_ABI}/libopencv_core.a
+                    )
+
+add_library(# Sets the name of the library.
+            opencv-imgproc
+
+            # Sets the library as a shared library.
+            STATIC
+
+            # Provides a relative path to your source file(s).
+            IMPORTED
+           )
+
+
+set_target_properties(
+                    opencv-imgproc
+
+                    PROPERTIES IMPORTED_LOCATION
+
+                    ${CMAKE_SOURCE_DIR}/opencv/libs/${ANDROID_ABI}/libopencv_imgproc.a
+                    )
+
+add_library(# Sets the name of the library.
+            opencv-hightgui
+
+            # Sets the library as a shared library.
+            STATIC
+
+            # Provides a relative path to your source file(s).
+            IMPORTED
+           )
+
+
+set_target_properties(
+                    opencv-hightgui
+
+                    PROPERTIES IMPORTED_LOCATION
+
+                    ${CMAKE_SOURCE_DIR}/opencv/libs/${ANDROID_ABI}/libopencv_highgui.a
+                    )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -141,6 +258,11 @@ target_link_libraries( # Specifies the target library.
                        # Links the target library to the log library
                        # included in the NDK.
                        assimp-lib
+                       soil-lib
+                       ${opencv-lib}
+                       ${opencv-core}
+                       ${opencv-imgproc}
+                       ${opencv-hightgui}
                        ${log-lib}
                        ${EGL-lib}
                        ${GLESv1-lib}
@@ -158,8 +280,18 @@ target_link_libraries( # Specifies the target library.
                        ${Android-lib}
                        )
 
+target_link_libraries( # Specifies the target library.
+                       soil-lib
+
+                       # Links the target library to the log library
+                       # included in the NDK.
+                       ${GLESv2-lib}
+                       ${log-lib}
+                       ${Android-lib}
+                       )
 
 add_dependencies(
                   native-lib
                   assimp-lib
+                  soil-lib
                 )

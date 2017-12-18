@@ -17,7 +17,7 @@ public class JNI {
         System.loadLibrary("native-lib");
     }
 
-    public native static void createEsJNI(AssetManager assetManager);
+    public native static void createEsJNI(AssetManager assetManager, String pathToInternalDir);
 
     public native static void changeEsJNI(int width, int height);
 

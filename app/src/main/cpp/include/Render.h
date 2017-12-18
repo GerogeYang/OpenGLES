@@ -39,7 +39,7 @@ public:
 
     ~Render();
 
-    void createEs(JNIEnv *env, jobject assetManager);
+    void createEs(JNIEnv *env, jobject assetManager, jstring pathToInternalDir);
 
     void changeEs(int width, int height);
 

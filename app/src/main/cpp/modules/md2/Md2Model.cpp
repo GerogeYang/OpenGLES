@@ -34,15 +34,11 @@ void Md2Model::initShader() {
 
 void Md2Model::initModelData() {
     LOGD("~~~initModelData()~~~\n");
-    bool reslut = RenderUtil::loadModel("model/fish.md2");
-    if (!reslut) {
-        LOGE("~~~load model failed~~~\n");
-    }
 }
 
 void Md2Model::initTextures() {
     LOGD("~~~initTextures()~~~\n");
-    textureId = RenderUtil::createTexture("texture/bird.bmp");
+    textureId = RenderUtil::loadTexture("texture/bird.bmp");
 }
 
 void Md2Model::initHandle() {

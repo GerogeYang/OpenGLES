@@ -9,14 +9,16 @@ extern "C" {
 Render *_render;
 
 JNIEXPORT void JNICALL
-Java_com_tcl_opengles_jni_JNI_createEsJNI(JNIEnv *env, jobject /* this */, jobject assetManager) {
+Java_com_tcl_opengles_jni_JNI_createEsJNI(JNIEnv *env, jobject /* this */,
+                                          jobject assetManager, jstring pathToInternalDir) {
     LOGD("~~~createEsJNI()~~~\n");
     _render = new Render();
-    _render->createEs(env, assetManager);
+    _render->createEs(env, assetManager, pathToInternalDir);
 }
 
 JNIEXPORT void JNICALL
-Java_com_tcl_opengles_jni_JNI_changeEsJNI(JNIEnv *env, jobject /* this */, jint width, jint height) {
+Java_com_tcl_opengles_jni_JNI_changeEsJNI(JNIEnv *env, jobject /* this */,
+                                          jint width, jint height) {
     LOGD("~~~changeEsJNI()~~~\n");
     _render->changeEs(width, height);
 }
